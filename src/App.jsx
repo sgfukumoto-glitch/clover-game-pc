@@ -100,10 +100,14 @@ function CloverSVG({ size = 80 }) {
 
 function CloverCard({ number, isTarget = false, size = "normal" }) {
   const d = {
-    large:  { w: 300, h: 435, numSz: 150, svgSz: 240, r: 32, bw: 8 },
-    normal: { w: 230, h: 338, numSz: 112, svgSz: 170, r: 28, bw: 6 },
-    small:  { w: 174, h: 275, numSz: 88,  svgSz: 145, r: 22, bw: 6 },
-    xsmall: { w: 154, h: 244, numSz: 72,  svgSz: 115, r: 18, bw: 5 },
+    large:   { w: 300, h: 435, numSz: 150, svgSz: 240, r: 32, bw: 8 },
+    normal:  { w: 230, h: 338, numSz: 112, svgSz: 170, r: 28, bw: 6 },
+    small:   { w: 174, h: 275, numSz: 88,  svgSz: 145, r: 22, bw: 6 },
+    xsmall:  { w: 154, h: 244, numSz: 72,  svgSz: 115, r: 18, bw: 5 },
+    // ゲーム中0.7倍サイズ
+    normal7: { w: 161, h: 237, numSz: 78,  svgSz: 119, r: 20, bw: 4 },
+    small7:  { w: 122, h: 193, numSz: 62,  svgSz: 102, r: 15, bw: 4 },
+    xsmall7: { w: 108, h: 171, numSz: 50,  svgSz:  81, r: 13, bw: 3 },
   }[size];
   return (
     <div style={{
@@ -381,25 +385,25 @@ export default function App() {
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
             {/* 左: カードエリア */}
             <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-              <div style={{ fontSize: "56px", fontWeight: "900", fontFamily: "monospace", color: running ? "#4ade80" : "#1e3a22" }}>{fmt(time)}</div>
+              <div style={{ fontSize: "40px", fontWeight: "900", fontFamily: "monospace", color: running ? "#4ade80" : "#1e3a22" }}>{fmt(time)}</div>
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "15px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "6px", fontWeight: "bold" }}>⑥ TARGET</div>
+                <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "6px", fontWeight: "bold" }}>⑥ TARGET</div>
                 {dealtCount >= 1
-                  ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal" /> : <CardBack size="normal" />)
-                  : <div style={{ width: 230, height: 338 }} />}
+                  ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal7" /> : <CardBack size="normal" />)
+                  : <div style={{ width: 161, height: 237 }} />}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%", opacity: 0.2 }}>
                 <div style={{ flex: 1, height: "2px", background: "#4ade80" }}/><span style={{ fontSize: "14px" }}>🍀</span><div style={{ flex: 1, height: "2px", background: "#4ade80" }}/>
               </div>
               <div style={{ textAlign: "center" }}>
                 <div style={{ display: "flex", gap: "5px", justifyContent: "center", marginBottom: "3px" }}>
-                  {["①","②","③","④","⑤"].map((n, i) => <div key={i} style={{ width: 174, textAlign: "center", fontSize: "18px", fontWeight: "900", color: "#aaa" }}>{n}</div>)}
+                  {["①","②","③","④","⑤"].map((n, i) => <div key={i} style={{ width: 122, textAlign: "center", fontSize: "14px", fontWeight: "900", color: "#aaa" }}>{n}</div>)}
                 </div>
                 <div style={{ display: "flex", gap: "5px", justifyContent: "center" }}>
                   {cards.nums.map((n, i) => (
                     dealtCount >= i + 2
-                      ? (allRevealed ? <CloverCard key={i} number={n} size="small" /> : <CardBack key={i} size="small" />)
-                      : <div key={i} style={{ width: 174, height: 275 }} />
+                      ? (allRevealed ? <CloverCard key={i} number={n} size="small7" /> : <CardBack key={i} size="small" />)
+                      : <div key={i} style={{ width: 122, height: 193 }} />
                   ))}
                 </div>
               </div>
@@ -450,11 +454,11 @@ export default function App() {
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
             {/* 左: カード */}
             <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-              <CloverCard number={cards.target} isTarget size="normal" />
+              <CloverCard number={cards.target} isTarget size="normal7" />
               <div style={{ display: "flex", gap: "5px" }}>
                 {cards.nums.map((n, i) => (
                   <div key={i} style={{ opacity: usedNums.includes(i) ? 0.25 : 1, transition: "opacity 0.2s" }}>
-                    <CloverCard number={n} size="xsmall" />
+                    <CloverCard number={n} size="xsmall7" />
                   </div>
                 ))}
               </div>

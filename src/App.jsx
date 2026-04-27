@@ -93,7 +93,7 @@ function CloverSVG({ size = 80 }) {
       <text x="76" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">÷</text>
       <text x="50" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="22" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">－</text>
       <text x="24" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="20" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">×</text>
-      <text x="56" y="106" fontSize="6" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
+      <text x="56" y="106" fontSize="10" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
     </svg>
   );
 }
@@ -401,15 +401,13 @@ export default function App() {
                 {/* フォスパ丸ボタン */}
                 {phase === "playing" && (isTutorial ? tutStep >= 4 : true) && (
                   <button onPointerUp={() => fospa()} style={{
-                    background: isTutorial && tutStep === 4
-                      ? "linear-gradient(135deg,#ff69b4,#ff1493)"
-                      : "linear-gradient(135deg,#16a34a,#15803d)",
+                    background: "linear-gradient(135deg,#16a34a,#15803d)",
                     border: "none", borderRadius: "50%",
                     width: "120px", height: "120px",
                     color: "white", fontWeight: "bold", fontSize: "14px",
                     cursor: "pointer", letterSpacing: "1px", flexShrink: 0,
                     boxShadow: isTutorial && tutStep === 4
-                      ? "0 5px 20px rgba(255,105,180,0.6), 0 0 0 4px #ff69b4"
+                      ? "0 5px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
                       : "0 5px 20px rgba(74,222,128,0.4)",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
                   }}>

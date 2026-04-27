@@ -318,9 +318,10 @@ export default function App() {
   return (
     <div style={{
       minHeight: "100vh", background: "#0a1a0f", display: "flex", flexDirection: "column", alignItems: "center",
-      padding: "32px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
+      padding: phase === "start" ? "32px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
     }}>
-      {/* HEADER */}
+      {/* HEADER - STARTのみ表示 */}
+      {phase === "start" && (
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <div style={{ fontSize: "52px", fontWeight: "900", letterSpacing: "5px", color: "#4ade80", lineHeight: 1 }}>
           🍀 CLOVER™️
@@ -328,6 +329,7 @@ export default function App() {
         <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>♣ NUMBER CARD GAME ♣</div>
         {bestTime !== null && <div style={{ fontSize: "16px", color: "#fbbf24", marginTop: "6px" }}>🏆 ベスト: {fmt(bestTime)}秒</div>}
       </div>
+      )}
 
       {/* START */}
       {phase === "start" && (
@@ -430,7 +432,7 @@ export default function App() {
               {isTutorial && tutStep === 1 && (<div><TutorialBubble text="👆 スタートと同時にタイムが動き出すよ！⏱" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 2 && (<div><TutorialBubble text="これが⑥ターゲット！この数字を答えにするのが目標だよ！" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 3 && (<div><TutorialBubble text="①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ" /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>記号(+-×÷)は何度使ってもいいよ</div><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
-              {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、👈のボタンを押すよ" />)}
+              {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、↙️のボタンを押すよ" />)}
             </div>
           </div>
         </div>

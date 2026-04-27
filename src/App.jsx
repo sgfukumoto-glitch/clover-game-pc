@@ -82,6 +82,7 @@ function CloverSVG({ size = 80 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 112" style={{ display: "block", overflow: "visible" }}>
       <line x1="50" y1="54" x2="36" y2="108" stroke="#3a9a3a" strokeWidth="5" strokeLinecap="round"/>
+
       {[0, 90, 180, 270].map(deg => (
         <g key={deg} transform={`rotate(${deg} 50 50)`}>
           <path d="M50,50 C50,50 30,38 30,22 C30,12 42,8 50,18 C58,8 70,12 70,22 C70,38 50,50 50,50Z"
@@ -93,7 +94,7 @@ function CloverSVG({ size = 80 }) {
       <text x="76" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">÷</text>
       <text x="50" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="22" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">－</text>
       <text x="24" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="20" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">×</text>
-      <text x="98" y="110" textAnchor="end" fontSize="7" fontWeight="bold" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
+      <text x="98" y="110" textAnchor="end" fontSize="8" fontWeight="bold" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
     </svg>
   );
 }

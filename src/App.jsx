@@ -400,18 +400,49 @@ export default function App() {
                 </div>
                 {/* フォスパ丸ボタン */}
                 {phase === "playing" && (isTutorial ? tutStep >= 4 : true) && (
-                  <button onPointerUp={() => fospa()} style={{
-                    background: "linear-gradient(135deg,#16a34a,#15803d)",
+                  <button onPointerUp={() => {
+                    // ピコンッ効果音
+                    try {
+                      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                      const o = ctx.createOscillator();
+                      const g = ctx.createGain();
+                      o.connect(g); g.connect(ctx.destination);
+                      o.type = "sine";
+                      o.frequency.setValueAtTime(880, ctx.currentTime);
+                      o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
+                      g.gain.setValueAtTime(0.4, ctx.currentTime);
+                      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                      o.start(ctx.currentTime);
+                      o.stop(ctx.currentTime + 0.3);
+                    } catch(e) {}
+                    fospa();
+                  }} style={{
+                    background: "linear-gradient(145deg,#22c55e,#16a34a)",
                     border: "none", borderRadius: "50%",
-                    width: "120px", height: "120px",
+                    width: "150px", height: "150px",
                     color: "white", fontWeight: "bold", fontSize: "14px",
                     cursor: "pointer", letterSpacing: "1px", flexShrink: 0,
                     boxShadow: isTutorial && tutStep === 4
-                      ? "0 5px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
-                      : "0 5px 20px rgba(74,222,128,0.4)",
+                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
+                      : "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4)",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
-                  }}>
-                    <span style={{ fontSize: "32px" }}>🙋</span>
+                    transform: "translateY(0)",
+                    transition: "transform 0.1s, box-shadow 0.1s",
+                  }}
+                  onPointerDown={e => {
+                    e.currentTarget.style.transform = "translateY(6px)";
+                    e.currentTarget.style.boxShadow = isTutorial && tutStep === 4
+                      ? "0 2px 0 #166534, 0 4px 10px rgba(74,222,128,0.3), 0 0 0 4px #ff69b4"
+                      : "0 2px 0 #166534, 0 4px 10px rgba(74,222,128,0.3)";
+                  }}
+                  onPointerLeave={e => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = isTutorial && tutStep === 4
+                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
+                      : "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4)";
+                  }}
+                  >
+                    <span style={{ fontSize: "40px" }}>🙋</span>
                     <span>フォスパ！</span>
                   </button>
                 )}

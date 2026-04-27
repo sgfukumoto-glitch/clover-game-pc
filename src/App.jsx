@@ -387,12 +387,36 @@ export default function App() {
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
             {/* 左: カードエリア */}
             <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-              <div style={{ fontSize: "40px", fontWeight: "900", fontFamily: "monospace", color: running ? "#4ade80" : "#1e3a22" }}>{fmt(time)}</div>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "6px", fontWeight: "bold" }}>⑥ TARGET</div>
-                {dealtCount >= 1
-                  ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal7" /> : <CardBack size="normal" />)
-                  : <div style={{ width: 161, height: 237 }} />}
+              {/* タイムと⑥カードとフォスパボタンを横並び */}
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+                  <div style={{ fontSize: "40px", fontWeight: "900", fontFamily: "monospace", color: running ? "#4ade80" : "#1e3a22" }}>{fmt(time)}</div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "6px", fontWeight: "bold" }}>⑥ TARGET</div>
+                    {dealtCount >= 1
+                      ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal7" /> : <CardBack size="normal" />)
+                      : <div style={{ width: 161, height: 237 }} />}
+                  </div>
+                </div>
+                {/* フォスパ丸ボタン */}
+                {phase === "playing" && (isTutorial ? tutStep >= 4 : true) && (
+                  <button onPointerUp={() => fospa()} style={{
+                    background: isTutorial && tutStep === 4
+                      ? "linear-gradient(135deg,#ff69b4,#ff1493)"
+                      : "linear-gradient(135deg,#16a34a,#15803d)",
+                    border: "none", borderRadius: "50%",
+                    width: "120px", height: "120px",
+                    color: "white", fontWeight: "bold", fontSize: "14px",
+                    cursor: "pointer", letterSpacing: "1px", flexShrink: 0,
+                    boxShadow: isTutorial && tutStep === 4
+                      ? "0 5px 20px rgba(255,105,180,0.6), 0 0 0 4px #ff69b4"
+                      : "0 5px 20px rgba(74,222,128,0.4)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
+                  }}>
+                    <span style={{ fontSize: "32px" }}>🙋</span>
+                    <span>フォスパ！</span>
+                  </button>
+                )}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", width: "100%", opacity: 0.2 }}>
                 <div style={{ flex: 1, height: "2px", background: "#4ade80" }}/><span style={{ fontSize: "14px" }}>🍀</span><div style={{ flex: 1, height: "2px", background: "#4ade80" }}/>
@@ -409,15 +433,6 @@ export default function App() {
                   ))}
                 </div>
               </div>
-              {phase === "playing" && (isTutorial ? tutStep >= 4 : true) && (
-                <button onPointerUp={() => fospa()} style={{
-                  background: "linear-gradient(135deg,#16a34a,#15803d)", border: "none", borderRadius: "14px",
-                  color: isTutorial && tutStep === 4 ? "#fbbf24" : "white",
-                  fontWeight: "bold", fontSize: "22px", padding: "16px 0",
-                  cursor: "pointer", width: "100%", letterSpacing: "2px",
-                  boxShadow: isTutorial && tutStep === 4 ? "0 5px 20px rgba(255,105,180,0.6), 0 0 0 3px #ff69b4" : "0 5px 20px rgba(74,222,128,0.3)",
-                }}>フォスパ！🙋</button>
-              )}
               {phase === "dealing" && (
                 <div style={{ minHeight: "80px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {countdown !== null
@@ -432,7 +447,7 @@ export default function App() {
               {isTutorial && tutStep === 1 && (<div><TutorialBubble text="👆 スタートと同時にタイムが動き出すよ！⏱" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 2 && (<div><TutorialBubble text="これが⑥ターゲット！この数字を答えにするのが目標だよ！" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 3 && (<div><TutorialBubble text="①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ" /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>記号(+-×÷)は何度使ってもいいよ</div><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
-              {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、↙️のボタンを押すよ" />)}
+              {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、👈のボタンを押すよ" />)}
             </div>
           </div>
         </div>

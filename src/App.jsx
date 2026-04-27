@@ -93,7 +93,7 @@ function CloverSVG({ size = 80 }) {
       <text x="76" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="18" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">÷</text>
       <text x="50" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="22" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">－</text>
       <text x="24" y="50" textAnchor="middle" dominantBaseline="middle" fontSize="20" fontWeight="900" fill="#111" fontFamily="Arial,sans-serif" stroke="white" strokeWidth="5" paintOrder="stroke">×</text>
-      <text x="50" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
+      <text x="92" y="108" textAnchor="end" fontSize="18" fontWeight="bold" fill="#3a9a3a" fontStyle="italic" fontFamily="Georgia,serif">to be happy…</text>
     </svg>
   );
 }
@@ -423,7 +423,7 @@ export default function App() {
                     color: "white", fontWeight: "bold", fontSize: "14px",
                     cursor: "pointer", letterSpacing: "1px", flexShrink: 0,
                     boxShadow: isTutorial && tutStep === 4
-                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
+                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #4ade80"
                       : "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4)",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
                     transform: "translateY(0)",
@@ -432,13 +432,13 @@ export default function App() {
                   onPointerDown={e => {
                     e.currentTarget.style.transform = "translateY(6px)";
                     e.currentTarget.style.boxShadow = isTutorial && tutStep === 4
-                      ? "0 2px 0 #166534, 0 4px 10px rgba(74,222,128,0.3), 0 0 0 4px #ff69b4"
+                      ? "0 2px 0 #166534, 0 4px 10px rgba(74,222,128,0.3), 0 0 0 4px #4ade80"
                       : "0 2px 0 #166534, 0 4px 10px rgba(74,222,128,0.3)";
                   }}
                   onPointerLeave={e => {
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = isTutorial && tutStep === 4
-                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #ff69b4"
+                      ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #4ade80"
                       : "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4)";
                   }}
                   >

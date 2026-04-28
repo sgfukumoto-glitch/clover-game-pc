@@ -595,6 +595,63 @@ export default function App() {
         </div>
       )}
 
+      {/* ABOUT */}
+      {phase === "about" && (
+        <div style={{ width: "100%", maxWidth: "900px" }}>
+          <div style={{ textAlign: "center", marginBottom: "24px" }}>
+            <div style={{ fontSize: "40px", fontWeight: "900", color: "#4ade80" }}>🍀 CLOVER™️について</div>
+          </div>
+
+          {/* カード1: 監修 */}
+          <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>🏢 監修</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
+              CLOVER™️は、<strong style={{ color: "white" }}>NPO法人 Foster Partner®️</strong>が監修して作ったゲームアプリです。
+            </div>
+          </div>
+
+          {/* カード2: 誕生の背景 */}
+          <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>📖 誕生の背景</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
+              以前、似たロジックのカードゲームが世にありましたが、今はどこにも販売されていません。<br/>
+              その寂しさから、ロジックを逆算してデジタル版として<strong style={{ color: "white" }}>CLOVER™️</strong>を組み立てました！
+            </div>
+          </div>
+
+          {/* カード3: こんな人に */}
+          <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>👨‍👩‍👧‍👦 こんな人に</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
+              四則計算ができれば<strong style={{ color: "white" }}>小学3年生(?)から</strong>プレイ可能！<br/>
+              大人だから強いとも言えないので、子どもから大人まで本気で勝負できます。<br/><br/>
+              家族が揃っているのにやることない…そんな時に！<br/>
+              <span style={{ color: "#fbbf24" }}>・在宅勤務でおうち時間が増えた</span><br/>
+              <span style={{ color: "#fbbf24" }}>・おじいちゃん・おばあちゃんの認知機能低下防止と孫の学習を同時に</span><br/>
+              <span style={{ color: "#fbbf24", fontWeight: "bold" }}>・家族全員が本気で競える！</span>
+            </div>
+          </div>
+
+          {/* カード4: 名前の由来 */}
+          <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "24px" }}>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>🍀 CLOVERの由来</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
+              四葉のクローバー → 幸せを呼ぶ → 一見困難でも、工夫すれば（並び変えて四則計算で組むことで）答えを導き出せるかもしれない、という意味を込めました！<br/><br/>
+              <strong style={{ color: "#fbbf24", fontSize: "18px" }}>※CLO<span style={{ color: "#ef4444" }}>LOVE</span>R™️の中には「LOVE（愛）」があるのがまたポイント笑</strong>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "12px" }}>
+            <div style={{ flex: 1 }}>
+              <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <GBtn label="タイトルへ" onClick={() => setPhase("start")} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* RESULT */}
       {phase === "result" && (
         <div style={{ textAlign: "center", width: "100%", maxWidth: "900px", position: "relative" }}>
@@ -617,7 +674,14 @@ export default function App() {
               <div style={{ marginBottom: "20px" }}>
                 <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.8", marginBottom: "14px" }}>⬆️ はクリアしたタイムだよ！本番では記録が出るたびに更新されるよ🏆</div>
                 <div style={{ background: "#ff69b422", border: "2px solid #ff69b4", borderRadius: "14px", padding: "14px", marginBottom: "14px", color: "#ff69b4", fontSize: "18px", fontWeight: "bold" }}>やり方はわかったかな？さぁいよいよチャレンジだ👇</div>
-                <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
+                <div style={{ marginBottom: "12px" }}>
+                  <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
+                </div>
+                <button onClick={() => setPhase("about")} style={{
+                  background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
+                  borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px",
+                  padding: "14px 0", cursor: "pointer", width: "100%",
+                }}>🍀 CLOVER™️について読む</button>
               </div>
             ) : (
               <>
@@ -627,6 +691,13 @@ export default function App() {
                 <div style={{ fontSize: "18px", color: "#5cb85c", fontStyle: "italic", marginBottom: "20px" }}>to be happy... 🍀</div>
                 <div style={{ display: "flex", gap: "14px", marginBottom: "14px" }}>
                   <div style={{ flex: 1 }}><PBtn label="次の問題へ 🃏" onClick={() => startGame(false)} /></div>
+                </div>
+                <div style={{ marginBottom: "14px" }}>
+                  <button onClick={() => setPhase("about")} style={{
+                    background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
+                    borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px",
+                    padding: "14px 0", cursor: "pointer", width: "100%",
+                  }}>🍀 CLOVER™️について読む</button>
                 </div>
               </>
             )}

@@ -1,5 +1,74 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
+const T = {
+  ja: {
+    title: "🍀 CLOVER™️", subtitle: "♣ NUMBER CARD GAME ♣",
+    best: "🏆 ベスト", sec: "秒", reset: "リセット", resetConfirm: "ベストタイムをリセットしますか？",
+    howToPlay: "やり方を学ぶ 📖", start: "スタート 🃏",
+    desc: (<>52枚の山からカードを引いて<br/><span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> に書かれた数字を四則計算で繋げて並び替えて <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> の数字(target)にしよう！！<br/>タイムを競うカードゲームだよ！</>),
+    toBeHappy: "to be happy... 🍀", tutHint1: "📖 ピンク→チュートリアルで試し遊び！", tutHint2: "🃏 黄色字→本番スタート！",
+    by: "by NPO法人 Foster Partner®️", back: "← 戻る",
+    tutBanner: "チュートリアル中 🩷", backToTitle: "タイトルへ戻る", next: "次へ →",
+    tut1: "👆 スタートと同時にタイムが動き出すよ！⏱",
+    target: "⑥ TARGET",
+    tut2: "これが⑥ターゲット！この数字を答えにするのが目標だよ！",
+    tut3: "①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ",
+    tut3b: "記号(+-×÷)は何度使ってもいいよ",
+    tut4: "出来たら「フォスパ」と言って、👈のボタンを押すよ",
+    fospa: "フォスパ！🙋", dealing: "カードを配っています…",
+    fospaTime: "フォスパ！ ⏱", tutBanner2: "チュートリアル中 🩷", backOk: "解き直したい時は戻れるよ",
+    tut5: <>このように、数字と演算記号を組み合わせて解答していくよ！<br/>出来たら「答え合わせ」を押してね</>,
+    tut6: <>式が入力されたよ！👇の「答え合わせ」ボタンを押してね。</>,
+    exprPlaceholder: "ここに式が入るよ", check: "答え合わせ！", retry: "やり直す",
+    errAll: "①〜⑤の数字を各1回ずつ全部使ってね！", errExpr: "式が正しくないよ。確認してね。",
+    correct: (t) => `正解！= ${t} 🍀`, wrong: (v) => `その式は ${v} になるよ`,
+    tutComplete: <>チュートリアル完了！🎉</>, correct2: "せいかい！🍬",
+    tutResult1: "⬆️ はクリアしたタイムだよ！本番では記録が出るたびに更新されるよ🏆",
+    tutResult2: <>やり方はわかったかな？さぁいよいよチャレンジだ👇</>,
+    nextGame: "次の問題へ 🃏（本番！）", about: "🍀 CLOVER™️について読む",
+    newRecord: "🎉 新記録！ 🎉", currentBest: "🏆 ただ今のベスト：",
+    nextGame2: "次の問題へ 🃏", toTitle: "タイトルへ",
+    aboutTitle: "🍀 CLOVER™️について",
+    about1title: "🏢 監修", about1: <><strong style={{ color: "white" }}>NPO法人 Foster Partner®️</strong>が監修して作ったゲームアプリです。</>,
+    about2title: "📖 誕生の背景", about2: <>以前、似たロジックのカードゲームが世にありましたが、今はどこにも販売されていません。<br/>その寂しさから、ロジックを逆算してデジタル版として<strong style={{ color: "white" }}>CLOVER™️</strong>を組み立てました！</>,
+    about3title: "👨‍👩‍👧‍👦 こんな人に", about3: <>四則計算ができれば<strong style={{ color: "white" }}>小学3年生(?)から</strong>プレイ可能！<br/>大人だから強いとも言えないので、子どもから大人まで本気で勝負できます。<br/><br/>家族が揃っているのにやることない…そんな時に！<br/><span style={{ color: "#fbbf24" }}>・在宅勤務でおうち時間が増えた</span><br/><span style={{ color: "#fbbf24" }}>・祖父母と孫でボケ防止にも笑</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・家族全員が本気で競える！</span></>,
+    about4title: "🍀 CLOVERの由来", about4: <>四葉のクローバー → 幸せを呼ぶ → 一見困難でも、工夫すれば（並び変えて四則計算で組むことで）答えを導き出せるかもしれない、という意味を込めました！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※C<span style={{ color: "#ef4444" }}>LOVE</span>R™️の中には「LOVE（愛）」があるのがまたポイント笑</strong></>,
+  },
+  en: {
+    title: "🍀 CLOVER™️", subtitle: "♣ NUMBER CARD GAME ♣",
+    best: "🏆 Best", sec: "s", reset: "Reset", resetConfirm: "Reset your best time?",
+    howToPlay: "How to Play 📖", start: "Start 🃏",
+    desc: (<>Draw cards from a 52-card deck!<br/>Use <span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> with arithmetic operations to reach the <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> target number!<br/>Race against the clock!</>),
+    toBeHappy: "to be happy... 🍀", tutHint1: "📖 Pink → Try the tutorial first!", tutHint2: "🃏 Yellow → Start the real game!",
+    by: "by NPO Foster Partner®️", back: "← Back",
+    tutBanner: "Tutorial 🩷", backToTitle: "Back to Title", next: "Next →",
+    tut1: "👆 The timer starts as soon as the game begins！⏱",
+    target: "⑥ TARGET",
+    tut2: "👆 This is the ⑥ Target! Your goal is to make this number!",
+    tut3: "These are the 5 cards ①②③④⑤! Rearrange them with arithmetic operators(+-×÷) to reach the target!",
+    tut3b: "You can use operators as many times as you like!",
+    tut4: "When you're ready, shout \"Fospa!\" and press 👈 the button!",
+    fospa: "Fospa！🙋", dealing: "Dealing cards…",
+    fospaTime: "Fospa！ ⏱", tutBanner2: "Tutorial 🩷", backOk: "You can go back to rethink!",
+    tut5: <>Combine numbers and operators like this to build your answer!<br/>Then press "Check Answer"!</>,
+    tut6: <>Expression entered! 👇 Press "Check Answer"!</>,
+    exprPlaceholder: "Your expression goes here", check: "Check Answer！", retry: "Try Again",
+    errAll: "Use each of ①~⑤ exactly once!", errExpr: "Invalid expression. Please check!",
+    correct: (t) => `Correct！= ${t} 🍀`, wrong: (v) => `That equals ${v}`,
+    tutComplete: <>Tutorial Complete！🎉</>, correct2: "Correct！🍬",
+    tutResult1: "⬆️ That's your clear time! In the real game, your best is saved！🏆",
+    tutResult2: <>Got the hang of it？ Now it's time to play for real！👇</>,
+    nextGame: "Next Game 🃏 (Real!)", about: "🍀 About CLOVER™️",
+    newRecord: "🎉 New Record！ 🎉", currentBest: "🏆 Current Best：",
+    nextGame2: "Next Game 🃏", toTitle: "Title",
+    aboutTitle: "🍀 About CLOVER™️",
+    about1title: "🏢 Supervised By", about1: <>This app was created under the supervision of <strong style={{ color: "white" }}>NPO Foster Partner®️</strong>.</>,
+    about2title: "📖 The Story Behind It", about2: <>There used to be a card game with similar logic, but it disappeared from stores. Out of nostalgia, we reverse-engineered the logic and rebuilt it digitally as <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
+    about3title: "👨‍👩‍👧‍👦 Who Is It For?", about3: <>Anyone who can do basic arithmetic — <strong style={{ color: "white" }}>from about 3rd grade</strong> and up!<br/>Adults don't necessarily have the advantage, so the whole family can compete for real.<br/><br/>Perfect for when the family is home but bored！<br/><span style={{ color: "#fbbf24" }}>・Working from home? Great indoor activity!</span><br/><span style={{ color: "#fbbf24" }}>・Grandparents vs grandkids — great for the brain!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・The whole family competing for real！</span></>,
+    about4title: "🍀 The Name CLOVER", about4: <>Four-leaf clover → brings happiness → even something that looks difficult might have a solution if you rearrange and combine it creatively！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※ C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — there's LOVE right in the name！ 😄</strong></>,
+  },
+};
+
 function buildDeck() {
   const deck = [];
   for (let n = 1; n <= 10; n++) for (let i = 0; i < 3; i++) deck.push(n);
@@ -60,20 +129,20 @@ function drawCards() {
   return { target: 10, nums: [1, 2, 3, 4, 5] };
 }
 
-function validateExpression(expr, nums, target) {
+function validateExpression(expr, nums, target, t) {
   const tokens = expr.replace(/[+\-*/()]/g, " ").trim().split(/\s+/).filter(Boolean);
   const usedNums = tokens.map(Number).filter(n => !isNaN(n));
   const sortedUsed = [...usedNums].sort((a, b) => a - b);
   const sortedNums = [...nums].sort((a, b) => a - b);
   if (JSON.stringify(sortedUsed) !== JSON.stringify(sortedNums))
-    return { ok: false, msg: "①〜⑤の数字を各1回ずつ全部使ってね！" };
+    return { ok: false, msg: t.errAll };
   try {
     const safe = expr.replace(/[^0-9+\-*/().]/g, "");
     // eslint-disable-next-line no-new-func
     const result = Function('"use strict"; return (' + safe + ")")();
-    if (Math.abs(result - target) < 0.0001) return { ok: true, msg: `正解！= ${target} 🍀` };
-    return { ok: false, msg: `その式は ${Number(result.toFixed(4))} になるよ` };
-  } catch { return { ok: false, msg: "式が正しくないよ。確認してね。" }; }
+    if (Math.abs(result - target) < 0.0001) return { ok: true, msg: t.correct(target) };
+    return { ok: false, msg: t.wrong(Number(result.toFixed(4))) };
+  } catch { return { ok: false, msg: t.errExpr }; }
 }
 
 const TUTORIAL_CARDS = { target: 18, nums: [1, 17, 5, 2, 6] };
@@ -205,6 +274,8 @@ function AnimatedExprDemo({ nums, onUsedIdxsChange, onDone }) {
 
 export default function App() {
   const [phase, setPhase] = useState("start");
+  const [lang, setLang] = useState("ja");
+  const t = T[lang];
   const [cards, setCards] = useState(null);
   const [revealedCount, setRevealedCount] = useState(-1);
   const [time, setTime] = useState(0);
@@ -266,7 +337,7 @@ export default function App() {
 
   const checkAnswer = () => {
     if (!cards) return;
-    const r = validateExpression(expr, cards.nums, cards.target);
+    const r = validateExpression(expr, cards.nums, cards.target, t);
     setFeedback(r);
     if (r.ok) {
       if (!isTutorial && (bestTime === null || time < bestTime)) {
@@ -377,19 +448,26 @@ export default function App() {
     }}>
       {/* HEADER - STARTのみ表示 */}
       {phase === "start" && (
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <div style={{ fontSize: "52px", fontWeight: "900", letterSpacing: "5px", color: "#4ade80", lineHeight: 1 }}>
-          🍀 CLOVER™️
+      <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", paddingRight: "8px" }}>
+          <button
+            onPointerDown={e=>btnDown(e,"0 3px 0 #333")}
+            onPointerUp={e=>btnUp(e,"0 10px 0 #333",()=>setLang(l=>l==="ja"?"en":"ja"))}
+            onPointerLeave={e=>btnLeave(e,"0 10px 0 #333")}
+            style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s", letterSpacing: "2px" }}>
+            {lang === "ja" ? "🇺🇸 English" : "🇯🇵 日本語"}
+          </button>
         </div>
-        <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>♣ NUMBER CARD GAME ♣</div>
+        <div style={{ fontSize: "52px", fontWeight: "900", letterSpacing: "5px", color: "#4ade80", lineHeight: 1 }}>{t.title}</div>
+        <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>{t.subtitle}</div>
         {bestTime !== null && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "6px", justifyContent: "center" }}>
-            <div style={{ fontSize: "16px", color: "#fbbf24" }}>🏆 ベスト: {fmt(bestTime)}秒</div>
+            <div style={{ fontSize: "16px", color: "#fbbf24" }}>{t.best}: {fmt(bestTime)}{t.sec}</div>
             <button
               onPointerDown={e=>btnDown(e,"0 1px 0 #7f1d1d")}
-              onPointerUp={e=>btnUp(e,"0 4px 0 #7f1d1d", () => { if(window.confirm("ベストタイムをリセットしますか？")) { setBestTime(null); try { localStorage.removeItem("clover_best_pc"); } catch {} } })}
+              onPointerUp={e=>btnUp(e,"0 4px 0 #7f1d1d", () => { if(window.confirm(t.resetConfirm)) { setBestTime(null); try { localStorage.removeItem("clover_best_pc"); } catch {} } })}
               onPointerLeave={e=>btnLeave(e,"0 4px 0 #7f1d1d")}
-              style={{ background: "linear-gradient(145deg,#ef4444,#dc2626)", border: "none", borderRadius: "8px", color: "white", fontWeight: "bold", fontSize: "11px", padding: "4px 10px", cursor: "pointer", boxShadow: "0 4px 0 #7f1d1d", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>リセット</button>
+              style={{ background: "linear-gradient(145deg,#ef4444,#dc2626)", border: "none", borderRadius: "8px", color: "white", fontWeight: "bold", fontSize: "11px", padding: "4px 10px", cursor: "pointer", boxShadow: "0 4px 0 #7f1d1d", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.reset}</button>
           </div>
         )}
       </div>
@@ -403,28 +481,21 @@ export default function App() {
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ background: "#111f14", border: "1px solid #4ade8020", borderRadius: "20px", padding: "24px", marginBottom: "20px" }}>
-              <div style={{ fontSize: "17px", lineHeight: "2.0", color: "#86efac" }}>
-                52枚の山からカードを引いて<br/>
-                <span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> に書かれた数字を四則計算で繋げて並び替えて{" "}
-                <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> の数字(target)にしよう！！<br/>
-                タイムを競うカードゲームだよ！
-              </div>
-              <div style={{ fontSize: "16px", color: "#5cb85c", marginTop: "14px", fontStyle: "italic" }}>to be happy... 🍀</div>
+              <div style={{ fontSize: "17px", lineHeight: "2.0", color: "#86efac" }}>{t.desc}</div>
+              <div style={{ fontSize: "16px", color: "#5cb85c", marginTop: "14px", fontStyle: "italic" }}>{t.toBeHappy}</div>
             </div>
             <div style={{ marginBottom: "14px" }}>
               <button
                 onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")}
                 onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)",()=>startGame(true))}
                 onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)")}
-                style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "18px 0", cursor: "pointer", width: "100%", letterSpacing: "2px", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>やり方を学ぶ 📖</button>
+                style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "18px 0", cursor: "pointer", width: "100%", letterSpacing: "2px", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.howToPlay}</button>
             </div>
-            <PBtn label="スタート 🃏" onClick={() => startGame(false)} />
+            <PBtn label={t.start} onClick={() => startGame(false)} />
             <div style={{ fontSize: "14px", color: "#86efac", marginTop: "16px", lineHeight: "2.0" }}>
-              📖 ピンク→チュートリアルで試し遊び！🃏 黄色字→本番スタート！
+              {t.tutHint1} {t.tutHint2}
             </div>
-            <div style={{ marginTop: "20px", fontSize: "20px", fontWeight: "bold", color: "white" }}>
-              by NPO法人 Foster Partner®️
-            </div>
+            <div style={{ marginTop: "20px", fontSize: "20px", fontWeight: "bold", color: "white" }}>{t.by}</div>
           </div>
         </div>
       )}
@@ -448,10 +519,10 @@ export default function App() {
                 cursor: "pointer", fontSize: "15px", flexShrink: 0,
                 boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",
                 transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
-              }}>← 戻る</button>
+              }}>{t.back}</button>
             {isTutorial
-              ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 16px", fontSize: "16px", fontWeight: "bold" }}>チュートリアル中 🩷</div>
-              : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>タイトルへ戻る</div>}
+              ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 16px", fontSize: "16px", fontWeight: "bold" }}>{t.tutBanner}</div>
+              : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>{t.backToTitle}</div>}
           </div>
 
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
@@ -497,7 +568,7 @@ export default function App() {
                   }}
                   >
                     <span style={{ fontSize: "40px" }}>🙋</span>
-                    <span>フォスパ！</span>
+                    <span>{t.fospa}</span>
                   </button>
                 )}
               </div>
@@ -520,17 +591,17 @@ export default function App() {
                 <div style={{ minHeight: "80px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {countdown !== null
                     ? <div style={{ fontSize: countdown === "GO!" ? "64px" : "80px", fontWeight: "900", color: countdown === "GO!" ? "#4ade80" : "#fbbf24", fontFamily: "monospace", animation: "countdown-pop 0.3s ease-out" }}>{countdown}</div>
-                    : <div style={{ color: "#4ade8033", fontSize: "16px" }}>カードを配っています…</div>}
+                    : <div style={{ color: "#4ade8033", fontSize: "16px" }}>{t.dealing}</div>}
                 </div>
               )}
             </div>
 
             {/* 右: チュートリアル */}
             <div style={{ flex: 1 }}>
-              <button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>次へ →</button>
-              {isTutorial && tutStep === 2 && (<div><TutorialBubble text="これが⑥ターゲット！この数字を答えにするのが目標だよ！" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
-              {isTutorial && tutStep === 3 && (<div><TutorialBubble text="①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ" /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>記号(+-×÷)は何度使ってもいいよ</div><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
-              {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、👈のボタンを押すよ" />)}
+              {isTutorial && tutStep === 1 && (<div><TutorialBubble text={t.tut1} /><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
+              {isTutorial && tutStep === 2 && (<div><TutorialBubble text={t.tut2} /><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
+              {isTutorial && tutStep === 3 && (<div><TutorialBubble text={t.tut3} /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>{t.tut3b}</div><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
+              {isTutorial && tutStep === 4 && (<TutorialBubble text={t.tut4} />)}
             </div>
           </div>
         </div>
@@ -544,12 +615,12 @@ export default function App() {
               onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
               onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",goBackToPlaying)}
               onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
-              style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px", cursor: "pointer", fontSize: "16px", flexShrink: 0, boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>← 戻る</button>
+              style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px", cursor: "pointer", fontSize: "16px", flexShrink: 0, boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.back}</button>
             {isTutorial
-              ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 14px", fontSize: "16px", fontWeight: "bold" }}>チュートリアル中 🩷</div>
+              ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 14px", fontSize: "16px", fontWeight: "bold" }}>{t.tutBanner2}</div>
               : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>解き直したい時は戻れるよ</div>}
           </div>
-          <div style={{ fontSize: "18px", color: "#4ade80", marginBottom: "10px" }}>フォスパ！ ⏱ {fmt(time)}秒</div>
+          <div style={{ fontSize: "18px", color: "#4ade80", marginBottom: "10px" }}>{t.fospaTime} {fmt(time)}{t.sec}</div>
 
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
             {/* 左: カード */}
@@ -583,7 +654,7 @@ export default function App() {
                 />
               )}
               {isTutorial && tutStep === 6 && (
-                <TutorialBubble text="式が入力されたよ！👇の「答え合わせ」ボタンを押してね。" />
+                <TutorialBubble text={t.tut6} />
               )}
 
               {/* 数字ボタン */}
@@ -639,13 +710,13 @@ export default function App() {
                   fontFamily: "monospace", fontWeight: "bold", color: "white",
                   textAlign: "center", marginBottom: "10px", minHeight: "56px", wordBreak: "break-all",
                 }}>
-                  {exprTokens.length > 0 ? tokensToDisplay(exprTokens) : <span style={{ color: "#2a4a2a", fontSize: "16px" }}>ここに式が入るよ</span>}
+                  {exprTokens.length > 0 ? tokensToDisplay(exprTokens) : <span style={{ color: "#2a4a2a", fontSize: "16px" }}>{t.exprPlaceholder}</span>}
                 </div>
               )}
               {(!isTutorial || tutStep !== 5) && (
                 <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
                   <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",backspaceExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", width: "60px", height: "50px", fontSize: "22px", cursor: "pointer", flexShrink: 0, boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>⌫</button>
-                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",clearExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer", boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>全消し</button>
+                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",clearExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer", boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{lang === "ja" ? "全消し" : "All Clear"}</button>
                 </div>
               )}
               {feedback && (
@@ -663,9 +734,9 @@ export default function App() {
                       cursor: "pointer", width: "100%", letterSpacing: "2px",
                       boxShadow: isTutorial && tutStep === 6 ? "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3), 0 0 0 3px #ff69b4" : "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",
                       transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
-                    }}>答え合わせ！</button>
+                    }}>{t.check}</button>
                 </div>
-                <div style={{ flex: 1 }}><GBtn label="やり直す" onClick={() => startGame(false)} /></div>
+                <div style={{ flex: 1 }}><GBtn label={t.retry} onClick={() => startGame(false)} /></div>
               </div>
             </div>
           </div>
@@ -676,55 +747,27 @@ export default function App() {
       {phase === "about" && (
         <div style={{ width: "100%", maxWidth: "900px" }}>
           <div style={{ textAlign: "center", marginBottom: "24px" }}>
-            <div style={{ fontSize: "40px", fontWeight: "900", color: "#4ade80" }}>🍀 CLOVER™️について</div>
+            <div style={{ fontSize: "40px", fontWeight: "900", color: "#4ade80" }}>{t.aboutTitle}</div>
           </div>
-
-          {/* カード1: 監修 */}
           <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
-            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>🏢 監修</div>
-            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
-              CLOVER™️は、<strong style={{ color: "white" }}>NPO法人 Foster Partner®️</strong>が監修して作ったゲームアプリです。
-            </div>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>{t.about1title}</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>{t.about1}</div>
           </div>
-
-          {/* カード2: 誕生の背景 */}
           <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
-            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>📖 誕生の背景</div>
-            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
-              以前、似たロジックのカードゲームが世にありましたが、今はどこにも販売されていません。<br/>
-              その寂しさから、ロジックを逆算してデジタル版として<strong style={{ color: "white" }}>CLOVER™️</strong>を組み立てました！
-            </div>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>{t.about2title}</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>{t.about2}</div>
           </div>
-
-          {/* カード3: こんな人に */}
           <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "16px" }}>
-            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>👨‍👩‍👧‍👦 こんな人に</div>
-            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
-              四則計算ができれば<strong style={{ color: "white" }}>小学3年生(?)から</strong>プレイ可能！<br/>
-              大人だから強いとも言えないので、子どもから大人まで本気で勝負できます。<br/><br/>
-              家族が揃っているのにやることない…そんな時に！<br/>
-              <span style={{ color: "#fbbf24" }}>・在宅勤務でおうち時間が増えた</span><br/>
-              <span style={{ color: "#fbbf24" }}>・おじいちゃん・おばあちゃんの認知機能低下防止と孫の学習を同時に</span><br/>
-              <span style={{ color: "#fbbf24", fontWeight: "bold" }}>・家族全員が本気で競える！</span>
-            </div>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>{t.about3title}</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>{t.about3}</div>
           </div>
-
-          {/* カード4: 名前の由来 */}
           <div style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "20px", padding: "24px", marginBottom: "24px" }}>
-            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>🍀 CLOVERの由来</div>
-            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>
-              四葉のクローバー → 幸せを呼ぶ → 一見困難でも、工夫すれば（並び変えて四則計算で組むことで）答えを導き出せるかもしれない、という意味を込めました！<br/><br/>
-              <strong style={{ color: "#fbbf24", fontSize: "18px" }}>※CLO<span style={{ color: "#ef4444" }}>LOVE</span>R™️の中には「LOVE（愛）」があるのがまたポイント笑</strong>
-            </div>
+            <div style={{ fontSize: "20px", fontWeight: "bold", color: "#4ade80", marginBottom: "12px" }}>{t.about4title}</div>
+            <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.9" }}>{t.about4}</div>
           </div>
-
           <div style={{ display: "flex", gap: "12px" }}>
-            <div style={{ flex: 1 }}>
-              <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <GBtn label="タイトルへ" onClick={() => setPhase("start")} />
-            </div>
+            <div style={{ flex: 1 }}><PBtn label={t.nextGame} onClick={() => startGame(false)} /></div>
+            <div style={{ flex: 1 }}><GBtn label={t.toTitle} onClick={() => setPhase("start")} /></div>
           </div>
         </div>
       )}
@@ -744,49 +787,37 @@ export default function App() {
           <div style={{ position: "relative", zIndex: 1 }}>
             <div style={{ fontSize: "64px", marginBottom: "8px" }}>🍀</div>
             <div style={{ fontSize: "44px", fontWeight: "900", color: "#4ade80", marginBottom: "6px" }}>
-              {isTutorial ? "チュートリアル完了！🎉" : "せいかい！🍬"}
+              {isTutorial ? t.tutComplete : t.correct2}
             </div>
-            <div style={{ fontSize: "56px", fontFamily: "monospace", fontWeight: "900", color: "#4ade80", marginBottom: "6px" }}>{fmt(time)}秒</div>
+            <div style={{ fontSize: "56px", fontFamily: "monospace", fontWeight: "900", color: "#4ade80", marginBottom: "6px" }}>{fmt(time)}{t.sec}</div>
             {isTutorial ? (
               <div style={{ marginBottom: "20px" }}>
-                <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.8", marginBottom: "14px" }}>⬆️ はクリアしたタイムだよ！本番では記録が出るたびに更新されるよ🏆</div>
-                <div style={{ background: "#ff69b422", border: "2px solid #ff69b4", borderRadius: "14px", padding: "14px", marginBottom: "14px", color: "#ff69b4", fontSize: "18px", fontWeight: "bold" }}>やり方はわかったかな？さぁいよいよチャレンジだ👇</div>
+                <div style={{ fontSize: "16px", color: "#86efac", lineHeight: "1.8", marginBottom: "14px" }}>{t.tutResult1}</div>
+                <div style={{ background: "#ff69b422", border: "2px solid #ff69b4", borderRadius: "14px", padding: "14px", marginBottom: "14px", color: "#ff69b4", fontSize: "18px", fontWeight: "bold" }}>{t.tutResult2}</div>
                 <div style={{ marginBottom: "12px" }}>
-                  <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
+                  <PBtn label={t.nextGame} onClick={() => startGame(false)} />
                 </div>
-                <button
-                  onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
-                  onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))}
-                  onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
-                  style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>🍀 CLOVER™️について読む</button>
+                <button onPointerDown={e=>btnDown(e,"0 2px 0 #166534")} onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))} onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")} style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.about}</button>
               </div>
             ) : (
               <>
-                {isNewRecord && <div style={{ color: "#fbbf24", fontSize: "24px", fontWeight: "900", marginBottom: "8px", animation: "blink-gold 1.8s infinite" }}>🎉 新記録！ 🎉</div>}
-                {bestTime !== null && <div style={{ color: "#fbbf24", fontSize: "18px", marginBottom: "8px" }}>🏆 ただ今のベスト：{fmt(bestTime)}秒</div>}
+                {isNewRecord && <div style={{ color: "#fbbf24", fontSize: "24px", fontWeight: "900", marginBottom: "8px", animation: "blink-gold 1.8s infinite" }}>{t.newRecord}</div>}
+                {bestTime !== null && <div style={{ color: "#fbbf24", fontSize: "18px", marginBottom: "8px" }}>{t.currentBest}{fmt(bestTime)}{t.sec}</div>}
                 <div style={{ color: "#555", fontSize: "15px", marginBottom: "6px" }}>{feedback?.msg}</div>
-                <div style={{ fontSize: "18px", color: "#5cb85c", fontStyle: "italic", marginBottom: "20px" }}>to be happy... 🍀</div>
+                <div style={{ fontSize: "18px", color: "#5cb85c", fontStyle: "italic", marginBottom: "20px" }}>{t.toBeHappy}</div>
                 <div style={{ display: "flex", gap: "14px", marginBottom: "14px" }}>
-                  <div style={{ flex: 1 }}><PBtn label="次の問題へ 🃏" onClick={() => startGame(false)} /></div>
+                  <div style={{ flex: 1 }}><PBtn label={t.nextGame2} onClick={() => startGame(false)} /></div>
                 </div>
                 <div style={{ marginBottom: "14px" }}>
-                  <button
-                    onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
-                    onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))}
-                    onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
-                    style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>🍀 CLOVER™️について読む</button>
+                  <button onPointerDown={e=>btnDown(e,"0 2px 0 #166534")} onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))} onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")} style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.about}</button>
                 </div>
               </>
             )}
             <div style={{ display: "flex", gap: "14px" }}>
               <div style={{ flex: 1 }}>
-                <button
-                  onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")}
-                  onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)",()=>startGame(true))}
-                  onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)")}
-                  style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "16px", padding: "18px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>やり方を学ぶ 📖</button>
+                <button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)",()=>startGame(true))} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)")} style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "16px", padding: "18px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.howToPlay}</button>
               </div>
-              <div style={{ flex: 1 }}><GBtn label="タイトルへ" onClick={() => setPhase("start")} /></div>
+              <div style={{ flex: 1 }}><GBtn label={t.toTitle} onClick={() => setPhase("start")} /></div>
             </div>
           </div>
         </div>

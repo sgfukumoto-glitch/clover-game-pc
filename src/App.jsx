@@ -301,20 +301,74 @@ export default function App() {
     setExprTokens(newTokens); setExpr(tokensToExpr(newTokens));
   };
 
-  const PBtn = ({ label, onClick, color = "#16a34a", textColor = "#fbbf24" }) => (
-    <button onClick={onClick} style={{
-      background: `linear-gradient(135deg,${color},${color}dd)`, border: "none", borderRadius: "14px",
-      color: textColor, fontWeight: "bold", fontSize: "20px", padding: "18px 0",
-      cursor: "pointer", width: "100%", letterSpacing: "2px", boxShadow: `0 5px 20px ${color}66`,
-    }}>{label}</button>
-  );
+  // ピコンッ効果音
+  const playPikon = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = "sine";
+      o.frequency.setValueAtTime(880, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
+      g.gain.setValueAtTime(0.3, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+      o.start(ctx.currentTime);
+      o.stop(ctx.currentTime + 0.25);
+    } catch(e) {}
+  };
 
-  const GBtn = ({ label, onClick }) => (
-    <button onClick={onClick} style={{
-      background: "#111f14", border: "1px solid #4ade8033", borderRadius: "12px",
-      color: "#86efac", fontWeight: "bold", fontSize: "18px", padding: "16px 0", cursor: "pointer", width: "100%",
-    }}>{label}</button>
-  );
+  // 立体ボタン共通ハンドラ
+  const btnDown = (e, shadowPressed) => {
+    e.currentTarget.style.transform = "translateY(4px)";
+    e.currentTarget.style.boxShadow = shadowPressed;
+  };
+  const btnUp = (e, shadowNormal, cb) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = shadowNormal;
+    playPikon();
+    if (cb) cb();
+  };
+  const btnLeave = (e, shadowNormal) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = shadowNormal;
+  };
+
+  const PBtn = ({ label, onClick, color = "#16a34a", textColor = "#fbbf24" }) => {
+    const sNormal = `0 6px 0 ${color}99, 0 8px 16px ${color}44`;
+    const sPressed = `0 2px 0 ${color}99, 0 3px 8px ${color}33`;
+    return (
+      <button
+        onPointerDown={e => btnDown(e, sPressed)}
+        onPointerUp={e => btnUp(e, sNormal, onClick)}
+        onPointerLeave={e => btnLeave(e, sNormal)}
+        style={{
+          background: `linear-gradient(145deg,${color}ee,${color})`, border: "none", borderRadius: "14px",
+          color: textColor, fontWeight: "bold", fontSize: "20px", padding: "18px 0",
+          cursor: "pointer", width: "100%", letterSpacing: "2px",
+          boxShadow: sNormal, transform: "translateY(0)",
+          transition: "transform 0.1s, box-shadow 0.1s",
+        }}>{label}</button>
+    );
+  };
+
+  const GBtn = ({ label, onClick }) => {
+    const sNormal = "0 6px 0 #0a1a0f, 0 8px 16px rgba(0,0,0,0.3)";
+    const sPressed = "0 2px 0 #0a1a0f, 0 3px 8px rgba(0,0,0,0.2)";
+    return (
+      <button
+        onPointerDown={e => btnDown(e, sPressed)}
+        onPointerUp={e => btnUp(e, sNormal, onClick)}
+        onPointerLeave={e => btnLeave(e, sNormal)}
+        style={{
+          background: "#111f14", border: "1px solid #4ade8033", borderRadius: "12px",
+          color: "#86efac", fontWeight: "bold", fontSize: "18px", padding: "16px 0",
+          cursor: "pointer", width: "100%",
+          boxShadow: sNormal, transform: "translateY(0)",
+          transition: "transform 0.1s, box-shadow 0.1s",
+        }}>{label}</button>
+    );
+  };
 
   return (
     <div style={{
@@ -328,7 +382,16 @@ export default function App() {
           🍀 CLOVER™️
         </div>
         <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>♣ NUMBER CARD GAME ♣</div>
-        {bestTime !== null && <div style={{ fontSize: "16px", color: "#fbbf24", marginTop: "6px" }}>🏆 ベスト: {fmt(bestTime)}秒</div>}
+        {bestTime !== null && (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "6px", justifyContent: "center" }}>
+            <div style={{ fontSize: "16px", color: "#fbbf24" }}>🏆 ベスト: {fmt(bestTime)}秒</div>
+            <button
+              onPointerDown={e=>btnDown(e,"0 1px 0 #7f1d1d")}
+              onPointerUp={e=>btnUp(e,"0 4px 0 #7f1d1d", () => { if(window.confirm("ベストタイムをリセットしますか？")) { setBestTime(null); try { localStorage.removeItem("clover_best_pc"); } catch {} } })}
+              onPointerLeave={e=>btnLeave(e,"0 4px 0 #7f1d1d")}
+              style={{ background: "linear-gradient(145deg,#ef4444,#dc2626)", border: "none", borderRadius: "8px", color: "white", fontWeight: "bold", fontSize: "11px", padding: "4px 10px", cursor: "pointer", boxShadow: "0 4px 0 #7f1d1d", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>リセット</button>
+          </div>
+        )}
       </div>
       )}
 
@@ -349,11 +412,11 @@ export default function App() {
               <div style={{ fontSize: "16px", color: "#5cb85c", marginTop: "14px", fontStyle: "italic" }}>to be happy... 🍀</div>
             </div>
             <div style={{ marginBottom: "14px" }}>
-              <button onClick={() => startGame(true)} style={{
-                background: "linear-gradient(135deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px",
-                color: "white", fontWeight: "bold", fontSize: "20px", padding: "18px 0",
-                cursor: "pointer", width: "100%", letterSpacing: "2px",
-              }}>やり方を学ぶ 📖</button>
+              <button
+                onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")}
+                onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)",()=>startGame(true))}
+                onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)")}
+                style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "18px 0", cursor: "pointer", width: "100%", letterSpacing: "2px", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>やり方を学ぶ 📖</button>
             </div>
             <PBtn label="スタート 🃏" onClick={() => startGame(false)} />
             <div style={{ fontSize: "14px", color: "#86efac", marginTop: "16px", lineHeight: "2.0" }}>
@@ -370,16 +433,22 @@ export default function App() {
       {(phase === "dealing" || phase === "playing") && cards && (
         <div style={{ width: "100%", maxWidth: "1100px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" }}>
-            <button onClick={() => {
-              if (isTutorial) {
-                if (tutStep <= 1) { dealingTimeoutsRef.current.forEach(id => clearTimeout(id)); dealingTimeoutsRef.current = []; setPhase("start"); setIsTutorial(false); setRunning(false); }
-                else setTutStep(s => s - 1);
-              } else { dealingTimeoutsRef.current.forEach(id => clearTimeout(id)); dealingTimeoutsRef.current = []; setPhase("start"); setRunning(false); clearExpr(); }
-            }} style={{
-              background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
-              borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px",
-              cursor: "pointer", fontSize: "15px", flexShrink: 0,
-            }}>← 戻る</button>
+            <button
+              onPointerDown={e => btnDown(e, "0 2px 0 #166534, 0 3px 8px rgba(74,222,128,0.2)")}
+              onPointerUp={e => btnUp(e, "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", () => {
+                if (isTutorial) {
+                  if (tutStep <= 1) { dealingTimeoutsRef.current.forEach(id => clearTimeout(id)); dealingTimeoutsRef.current = []; setPhase("start"); setIsTutorial(false); setRunning(false); }
+                  else setTutStep(s => s - 1);
+                } else { dealingTimeoutsRef.current.forEach(id => clearTimeout(id)); dealingTimeoutsRef.current = []; setPhase("start"); setRunning(false); clearExpr(); }
+              })}
+              onPointerLeave={e => btnLeave(e, "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+              style={{
+                background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80",
+                borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px",
+                cursor: "pointer", fontSize: "15px", flexShrink: 0,
+                boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",
+                transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
+              }}>← 戻る</button>
             {isTutorial
               ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 16px", fontSize: "16px", fontWeight: "bold" }}>チュートリアル中 🩷</div>
               : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>タイトルへ戻る</div>}
@@ -401,23 +470,8 @@ export default function App() {
                 </div>
                 {/* フォスパ丸ボタン */}
                 {phase === "playing" && (isTutorial ? tutStep >= 4 : true) && (
-                  <button onPointerUp={() => {
-                    // ピコンッ効果音
-                    try {
-                      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                      const o = ctx.createOscillator();
-                      const g = ctx.createGain();
-                      o.connect(g); g.connect(ctx.destination);
-                      o.type = "sine";
-                      o.frequency.setValueAtTime(880, ctx.currentTime);
-                      o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
-                      g.gain.setValueAtTime(0.4, ctx.currentTime);
-                      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-                      o.start(ctx.currentTime);
-                      o.stop(ctx.currentTime + 0.3);
-                    } catch(e) {}
-                    fospa();
-                  }} style={{
+                  <button onPointerUp={() => { playPikon(); fospa(); }}
+                  style={{
                     background: "linear-gradient(145deg,#22c55e,#16a34a)",
                     border: "none", borderRadius: "50%",
                     width: "150px", height: "150px",
@@ -427,8 +481,7 @@ export default function App() {
                       ? "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4), 0 0 0 4px #4ade80"
                       : "0 8px 0 #166534, 0 10px 20px rgba(74,222,128,0.4)",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
-                    transform: "translateY(0)",
-                    transition: "transform 0.1s, box-shadow 0.1s",
+                    transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
                   }}
                   onPointerDown={e => {
                     e.currentTarget.style.transform = "translateY(6px)";
@@ -474,7 +527,7 @@ export default function App() {
 
             {/* 右: チュートリアル */}
             <div style={{ flex: 1 }}>
-              {isTutorial && tutStep === 1 && (<div><TutorialBubble text="👆 スタートと同時にタイムが動き出すよ！⏱" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
+              <button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>次へ →</button>
               {isTutorial && tutStep === 2 && (<div><TutorialBubble text="これが⑥ターゲット！この数字を答えにするのが目標だよ！" /><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 3 && (<div><TutorialBubble text="①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ" /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>記号(+-×÷)は何度使ってもいいよ</div><button onClick={advanceTutorial} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px" }}>次へ →</button></div>)}
               {isTutorial && tutStep === 4 && (<TutorialBubble text="出来たら「フォスパ」と言って、👈のボタンを押すよ" />)}
@@ -487,11 +540,11 @@ export default function App() {
       {phase === "fospa" && cards && (
         <div style={{ width: "100%", maxWidth: "1100px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-            <button onClick={goBackToPlaying} style={{
-              background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
-              borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px",
-              cursor: "pointer", fontSize: "16px", flexShrink: 0,
-            }}>← 戻る</button>
+            <button
+              onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
+              onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",goBackToPlaying)}
+              onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+              style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px", cursor: "pointer", fontSize: "16px", flexShrink: 0, boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>← 戻る</button>
             {isTutorial
               ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 14px", fontSize: "16px", fontWeight: "bold" }}>チュートリアル中 🩷</div>
               : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>解き直したい時は戻れるよ</div>}
@@ -535,28 +588,47 @@ export default function App() {
 
               {/* 数字ボタン */}
               <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
-                {cards.nums.map((n, i) => (
-                  <button key={i} onClick={() => appNum(i, n)} style={{
-                    background: ["#3b82f6","#ec4899","#f97316","#8b5cf6","#10b981"][i],
-                    border: "none", borderRadius: "10px", color: "white", fontWeight: "900",
-                    flex: 1, height: "72px", fontSize: "28px",
-                    cursor: isTutorial && tutStep === 5 ? "default" : "pointer",
-                    opacity: usedNums.includes(i) ? 0.25 : 1, transition: "opacity 0.2s",
-                    pointerEvents: isTutorial && tutStep === 5 ? "none" : "auto",
-                  }}>{n}</button>
-                ))}
+                {cards.nums.map((n, i) => {
+                  const bg = ["#3b82f6","#ec4899","#f97316","#8b5cf6","#10b981"][i];
+                  const sN = `0 5px 0 ${bg}99, 0 6px 12px ${bg}44`;
+                  const sP = `0 1px 0 ${bg}99`;
+                  return (
+                    <button key={i}
+                      onPointerDown={e => btnDown(e, sP)}
+                      onPointerUp={e => btnUp(e, sN, () => appNum(i, n))}
+                      onPointerLeave={e => btnLeave(e, sN)}
+                      style={{
+                        background: `linear-gradient(145deg,${bg}ee,${bg})`,
+                        border: "none", borderRadius: "10px", color: "white", fontWeight: "900",
+                        flex: 1, height: "72px", fontSize: "28px",
+                        cursor: isTutorial && tutStep === 5 ? "default" : "pointer",
+                        opacity: usedNums.includes(i) ? 0.25 : 1,
+                        boxShadow: sN, transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
+                        pointerEvents: isTutorial && tutStep === 5 ? "none" : "auto",
+                      }}>{n}</button>
+                  );
+                })}
               </div>
 
               {/* 演算子 */}
               <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
-                {[["＋","+"],["－","-"],["×","*"],["÷","/"],["（","("],["）",")"]].map(([l,v]) => (
-                  <button key={l} onClick={() => appOp(v)} style={{
-                    background: "#111f14", border: "2px solid #4ade8033", borderRadius: "10px",
-                    color: "#4ade80", fontWeight: "900", flex: 1, height: "72px", fontSize: "28px",
-                    cursor: isTutorial && tutStep === 5 ? "default" : "pointer",
-                    pointerEvents: isTutorial && tutStep === 5 ? "none" : "auto",
-                  }}>{l}</button>
-                ))}
+                {[["＋","+"],["－","-"],["×","*"],["÷","/"],["（","("],["）",")"]].map(([l,v]) => {
+                  const sN = "0 5px 0 #0a1a0f, 0 6px 12px rgba(0,0,0,0.3)";
+                  const sP = "0 1px 0 #0a1a0f";
+                  return (
+                    <button key={l}
+                      onPointerDown={e => btnDown(e, sP)}
+                      onPointerUp={e => btnUp(e, sN, () => appOp(v))}
+                      onPointerLeave={e => btnLeave(e, sN)}
+                      style={{
+                        background: "#1a2f1e", border: "2px solid #4ade8033", borderRadius: "10px",
+                        color: "#4ade80", fontWeight: "900", flex: 1, height: "72px", fontSize: "28px",
+                        cursor: isTutorial && tutStep === 5 ? "default" : "pointer",
+                        boxShadow: sN, transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
+                        pointerEvents: isTutorial && tutStep === 5 ? "none" : "auto",
+                      }}>{l}</button>
+                  );
+                })}
               </div>
 
               {/* 式表示 */}
@@ -572,8 +644,8 @@ export default function App() {
               )}
               {(!isTutorial || tutStep !== 5) && (
                 <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
-                  <button onClick={backspaceExpr} style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", width: "60px", height: "50px", fontSize: "22px", cursor: "pointer", flexShrink: 0 }}>⌫</button>
-                  <button onClick={clearExpr} style={{ background: "#111f14", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer" }}>全消し</button>
+                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",backspaceExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", width: "60px", height: "50px", fontSize: "22px", cursor: "pointer", flexShrink: 0, boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>⌫</button>
+                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",clearExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer", boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>全消し</button>
                 </div>
               )}
               {feedback && (
@@ -581,12 +653,17 @@ export default function App() {
               )}
               <div style={{ display: "flex", gap: "10px" }}>
                 <div style={{ flex: 2 }}>
-                  <button onClick={checkAnswer} style={{
-                    background: "linear-gradient(135deg,#16a34a,#15803d)", border: "none", borderRadius: "12px",
-                    color: "white", fontWeight: "bold", fontSize: "22px", padding: "18px 0",
-                    cursor: "pointer", width: "100%", letterSpacing: "2px",
-                    boxShadow: isTutorial && tutStep === 6 ? "0 5px 20px rgba(255,105,180,0.6), 0 0 0 3px #ff69b4" : "0 5px 20px rgba(74,222,128,0.3)",
-                  }}>答え合わせ！</button>
+                  <button
+                    onPointerDown={e=>btnDown(e,"0 2px 0 #166534, 0 3px 8px rgba(74,222,128,0.2)")}
+                    onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",checkAnswer)}
+                    onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+                    style={{
+                      background: "linear-gradient(145deg,#22c55e,#16a34a)", border: "none", borderRadius: "12px",
+                      color: "white", fontWeight: "bold", fontSize: "22px", padding: "18px 0",
+                      cursor: "pointer", width: "100%", letterSpacing: "2px",
+                      boxShadow: isTutorial && tutStep === 6 ? "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3), 0 0 0 3px #ff69b4" : "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",
+                      transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s",
+                    }}>答え合わせ！</button>
                 </div>
                 <div style={{ flex: 1 }}><GBtn label="やり直す" onClick={() => startGame(false)} /></div>
               </div>
@@ -677,11 +754,11 @@ export default function App() {
                 <div style={{ marginBottom: "12px" }}>
                   <PBtn label="次の問題へ 🃏（本番！）" onClick={() => startGame(false)} />
                 </div>
-                <button onClick={() => setPhase("about")} style={{
-                  background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
-                  borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px",
-                  padding: "14px 0", cursor: "pointer", width: "100%",
-                }}>🍀 CLOVER™️について読む</button>
+                <button
+                  onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
+                  onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))}
+                  onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+                  style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>🍀 CLOVER™️について読む</button>
               </div>
             ) : (
               <>
@@ -693,17 +770,21 @@ export default function App() {
                   <div style={{ flex: 1 }}><PBtn label="次の問題へ 🃏" onClick={() => startGame(false)} /></div>
                 </div>
                 <div style={{ marginBottom: "14px" }}>
-                  <button onClick={() => setPhase("about")} style={{
-                    background: "linear-gradient(135deg,#1a3a22,#0d2414)", border: "2px solid #4ade80",
-                    borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px",
-                    padding: "14px 0", cursor: "pointer", width: "100%",
-                  }}>🍀 CLOVER™️について読む</button>
+                  <button
+                    onPointerDown={e=>btnDown(e,"0 2px 0 #166534")}
+                    onPointerUp={e=>btnUp(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)",()=>setPhase("about"))}
+                    onPointerLeave={e=>btnLeave(e,"0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+                    style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "14px", color: "#4ade80", fontWeight: "bold", fontSize: "16px", padding: "14px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>🍀 CLOVER™️について読む</button>
                 </div>
               </>
             )}
             <div style={{ display: "flex", gap: "14px" }}>
               <div style={{ flex: 1 }}>
-                <button onClick={() => startGame(true)} style={{ background: "linear-gradient(135deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "16px", padding: "18px 0", cursor: "pointer", width: "100%" }}>やり方を学ぶ 📖</button>
+                <button
+                  onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")}
+                  onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)",()=>startGame(true))}
+                  onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)")}
+                  style={{ background: "linear-gradient(145deg,#ff69b4,#ff1493)", border: "none", borderRadius: "14px", color: "white", fontWeight: "bold", fontSize: "16px", padding: "18px 0", cursor: "pointer", width: "100%", boxShadow: "0 6px 0 #c0145a, 0 8px 16px rgba(255,105,180,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>やり方を学ぶ 📖</button>
               </div>
               <div style={{ flex: 1 }}><GBtn label="タイトルへ" onClick={() => setPhase("start")} /></div>
             </div>

@@ -7,7 +7,7 @@ const T = {
     howToPlay: "やり方を学ぶ 📖", start: "スタート 🃏",
     desc: (<>52枚の山からカードを引いて<br/><span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> に書かれた数字を四則計算で繋げて並び替えて <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> の数字(target)にしよう！！<br/>タイムを競うカードゲームだよ！</>),
     toBeHappy: "to be happy... 🍀", tutHint1: "📖 ピンク→チュートリアルで試し遊び！", tutHint2: "🃏 黄色字→本番スタート！",
-    by: "by NPO法人 Foster Partner®️", back: "← 戻る",
+    by: "by NPO法人 Foster Partner®️", back: "← 戻る", surrender: "降参 →", surrenderTitle: "解答例", surrenderSub: "こんな解き方があったよ！", surrenderNext: "次の問題へ 🃏", tut4surrender: "わからなくて解答を知りたい場合は「降参」ボタンを押すよ。",
     tutBanner: "チュートリアル中 🩷", backToTitle: "タイトルへ戻る", next: "次へ →",
     tut1: "👆 スタートと同時にタイムが動き出すよ！⏱",
     target: "⑥ TARGET",
@@ -40,7 +40,7 @@ const T = {
     howToPlay: "How to Play 📖", start: "Start 🃏",
     desc: (<>Draw cards from a 52-card deck!<br/>Use <span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> with arithmetic operations to reach the <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> target number!<br/>Race against the clock!</>),
     toBeHappy: "to be happy... 🍀", tutHint1: "📖 Pink → Try the tutorial first!", tutHint2: "🃏 Yellow → Start the real game!",
-    by: "by NPO Foster Partner®️", back: "← Back",
+    by: "by NPO Foster Partner®️", back: "← Back", surrender: "Skip →", surrenderTitle: "Answer", surrenderSub: "Here's one way to solve it!", surrenderNext: "Next Game 🃏", tut4surrender: "If you're stuck and want to see the answer, press the \"Skip\" button.",
     tutBanner: "Tutorial 🩷", backToTitle: "Back to Title", next: "Next →",
     tut1: "👆 The timer starts as soon as the game begins！⏱",
     target: "⑥ TARGET",
@@ -84,6 +84,46 @@ function shuffle(arr) {
   }
   return a;
 }
+function findSolution(nums, target) {
+  const ops = ["+", "-", "*", "/"];
+  const opSymbols = { "+": "+", "-": "-", "*": "×", "/": "÷" };
+  function perms(arr) {
+    if (arr.length <= 1) return [arr];
+    const r = [];
+    for (let i = 0; i < arr.length; i++) {
+      const rest = [...arr.slice(0, i), ...arr.slice(i + 1)];
+      for (const p of perms(rest)) r.push([arr[i], ...p]);
+    }
+    return r;
+  }
+  function opCombos(n) {
+    if (n === 0) return [[]];
+    const r = [];
+    for (const op of ops) for (const rest of opCombos(n - 1)) r.push([op, ...rest]);
+    return r;
+  }
+  function evaluate(vals, operators) {
+    let result = vals[0];
+    for (let i = 0; i < operators.length; i++) {
+      const v = vals[i + 1];
+      if (operators[i] === "+") result += v;
+      else if (operators[i] === "-") result -= v;
+      else if (operators[i] === "*") result *= v;
+      else { if (v === 0) return null; result /= v; }
+    }
+    return result;
+  }
+  for (const perm of perms(nums))
+    for (const combo of opCombos(4)) {
+      const val = evaluate(perm, combo);
+      if (val !== null && Math.abs(val - target) < 0.0001) {
+        const expr = perm.map((n, i) => i === 0 ? n : `${opSymbols[combo[i-1]]} ${n}`).join(" ");
+        return expr;
+      }
+    }
+  return null;
+}
+
 function canSolve(nums, target) {
   const ops = ["+", "-", "*", "/"];
   function perms(arr) {
@@ -535,6 +575,13 @@ export default function App() {
             {isTutorial
               ? <div style={{ flex: 1, background: "#ff69b4", color: "white", borderRadius: "10px", padding: "10px 16px", fontSize: "16px", fontWeight: "bold" }}>{t.tutBanner}</div>
               : <div style={{ flex: 1, fontSize: "13px", color: "#4ade8066" }}>{t.backToTitle}</div>}
+            {phase === "playing" && (
+              <button
+                onPointerDown={e => btnDown(e, "0 2px 0 #166534, 0 3px 8px rgba(74,222,128,0.2)")}
+                onPointerUp={e => btnUp(e, "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", () => { setRunning(false); setPhase("surrender"); })}
+                onPointerLeave={e => btnLeave(e, "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)")}
+                style={{ background: "linear-gradient(145deg,#1e4a2a,#1a3a22)", border: "2px solid #4ade80", borderRadius: "10px", color: "#4ade80", fontWeight: "900", padding: "10px 18px", cursor: "pointer", fontSize: "15px", flexShrink: 0, boxShadow: "0 6px 0 #166534, 0 8px 16px rgba(74,222,128,0.3)", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.surrender}</button>
+            )}
           </div>
           <div style={{ display: "flex", gap: "40px", alignItems: "flex-start" }}>
             <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
@@ -585,7 +632,7 @@ export default function App() {
               {isTutorial && tutStep === 1 && (<div><TutorialBubble text={t.tut1} /><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
               {isTutorial && tutStep === 2 && (<div><TutorialBubble text={t.tut2} /><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
               {isTutorial && tutStep === 3 && (<div><TutorialBubble text={t.tut3} /><div style={{ background: "#e8336d", color: "white", borderRadius: "12px", padding: "12px", fontSize: "16px", fontWeight: "bold", margin: "10px 0" }}>{t.tut3b}</div><button onPointerDown={e=>btnDown(e,"0 2px 0 #c0145a")} onPointerUp={e=>btnUp(e,"0 6px 0 #c0145a",advanceTutorial)} onPointerLeave={e=>btnLeave(e,"0 6px 0 #c0145a")} style={{ background: "#ff69b4", border: "none", borderRadius: "10px", color: "white", fontWeight: "bold", padding: "12px 24px", cursor: "pointer", fontSize: "16px", boxShadow: "0 6px 0 #c0145a", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{t.next}</button></div>)}
-              {isTutorial && tutStep === 4 && (<TutorialBubble text={t.tut4} />)}
+              {isTutorial && tutStep === 4 && (<div><TutorialBubble text={t.tut4} /><div style={{ fontSize: "14px", color: "#86efac", marginTop: "10px", lineHeight: "1.7" }}>{t.tut4surrender}</div></div>)}
             </div>
           </div>
         </div>
@@ -688,6 +735,36 @@ export default function App() {
           <div style={{ display: "flex", gap: "12px" }}>
             <div style={{ flex: 1 }}><PBtn label={t.nextGame} onClick={() => startGame(false)} /></div>
             <div style={{ flex: 1 }}><GBtn label={t.toTitle} onClick={() => setPhase("start")} /></div>
+          </div>
+        </div>
+      )}
+
+      {/* SURRENDER */}
+      {phase === "surrender" && cards && (
+        <div style={{ textAlign: "center", width: "100%", maxWidth: "900px" }}>
+          <div style={{ fontSize: "64px", marginBottom: "12px" }}>🍀</div>
+          <div style={{ fontSize: "44px", fontWeight: "900", color: "#4ade80", marginBottom: "6px" }}>{t.surrenderTitle}</div>
+          <div style={{ fontSize: "20px", color: "#86efac", marginBottom: "24px" }}>{t.surrenderSub}</div>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginBottom: "24px", flexWrap: "wrap", alignItems: "flex-start" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "8px", fontWeight: "bold" }}>{t.target}</div>
+              <CloverCard number={cards.target} isTarget size="normal7" />
+            </div>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+              {cards.nums.map((n, i) => <CloverCard key={i} number={n} size="xsmall7" />)}
+            </div>
+          </div>
+
+          <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "24px 32px", marginBottom: "28px" }}>
+            <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "12px", letterSpacing: "2px" }}>例えば…</div>
+            <div style={{ fontSize: "32px", fontWeight: "900", color: "white", fontFamily: "monospace", letterSpacing: "2px" }}>
+              {findSolution(cards.nums, cards.target)} = {cards.target}
+            </div>
+          </div>
+
+          <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+            <PBtn label={t.surrenderNext} onClick={() => { clearExpr(); startGame(false); }} />
           </div>
         </div>
       )}

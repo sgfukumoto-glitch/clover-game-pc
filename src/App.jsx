@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 const T = {
   ja: {
@@ -14,7 +14,7 @@ const T = {
     tut2: "これが⑥ターゲット！この数字を答えにするのが目標だよ！",
     tut3: "①②③④⑤の5枚！この数字を並べ替えて四則計算記号(+-×÷)で繋いでターゲットの数字にするよ",
     tut3b: "記号(+-×÷)は何度使ってもいいよ",
-    tut4: "出来たら「フォスパ」と言って、👈のボタンを押すよ",
+    tut4: "出来たら「フォスパ」と言って、👈のボタンを押すよ。わからない時は「降参」ボタン👆を押すよ",
     fospa: "フォスパ！🙋", dealing: "カードを配っています…",
     fospaTime: "フォスパ！ ⏱", tutBanner2: "チュートリアル中 🩷", backOk: "解き直したい時は戻れるよ",
     tut5: <>このように、数字と演算記号を組み合わせて解答していくよ！<br/>出来たら「答え合わせ」を押してね</>,
@@ -47,7 +47,7 @@ const T = {
     tut2: "👆 This is the ⑥ Target! Your goal is to make this number!",
     tut3: "These are the 5 cards ①②③④⑤! Rearrange them with arithmetic operators(+-×÷) to reach the target!",
     tut3b: "You can use operators as many times as you like!",
-    tut4: "When you're ready, shout \"Fospa!\" and press 👈 the button!",
+    tut4: "When you're ready, shout \"Fospa!\" and press 👈 the button! If you're stuck, press the \"Skip\" button 👆",
     fospa: "Fospa！🙋", dealing: "Dealing cards…",
     fospaTime: "Fospa！ ⏱", tutBanner2: "Tutorial 🩷", backOk: "You can go back to rethink!",
     tut5: <>Combine numbers and operators like this to build your answer!<br/>Then press "Check Answer"!</>,
@@ -401,6 +401,7 @@ export default function App() {
   }, [running]);
 
   const goBackToPlaying = () => { setPhase("playing"); setRunning(true); if (isTutorial) setTutStep(4); };
+  const solutionExpr = useMemo(() => cards ? (findSolution(cards.nums, cards.target) ?? "…") : "…", [cards]);
   const fospa = () => { setRunning(false); setPhase("fospa"); if (isTutorial) setTutStep(5); };
 
   const checkAnswer = () => {
@@ -462,8 +463,12 @@ export default function App() {
     e.currentTarget.style.boxShadow = shadowPressed;
   };
   const btnUp = (e, shadowNormal, cb) => {
-    e.currentTarget.style.transform = "translateY(0)";
-    e.currentTarget.style.boxShadow = shadowNormal;
+    try {
+      if (e.currentTarget) {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = shadowNormal;
+      }
+    } catch {}
     playPikon();
     if (cb) cb();
   };
@@ -759,7 +764,7 @@ export default function App() {
           <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "24px 32px", marginBottom: "28px" }}>
             <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "12px", letterSpacing: "2px" }}>例えば…</div>
             <div style={{ fontSize: "32px", fontWeight: "900", color: "white", fontFamily: "monospace", letterSpacing: "2px" }}>
-              {findSolution(cards.nums, cards.target)} = {cards.target}
+              {solutionExpr} = {cards.target}
             </div>
           </div>
 

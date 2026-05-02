@@ -560,6 +560,7 @@ export default function App() {
             <PBtn label={t.start} onClick={() => startGame(false)} />
             <div style={{ fontSize: "14px", color: "#86efac", marginTop: "16px", lineHeight: "2.0" }}>{t.tutHint1} {t.tutHint2}</div>
             <div style={{ marginTop: "20px", fontSize: "20px", fontWeight: "bold", color: "white" }}>{t.by}</div>
+            <a href="http://nextchallenge.jp" target="_blank" style={{ color: "#4ade80", fontSize: "14px", textDecoration: "none", letterSpacing: "1px" }}>nextchallenge.jp</a>
           </div>
         </div>
       )}
@@ -747,22 +748,21 @@ export default function App() {
       {/* SURRENDER */}
       {phase === "surrender" && cards && (
         <div style={{ textAlign: "center", width: "100%", maxWidth: "900px" }}>
-          <div style={{ fontSize: "64px", marginBottom: "12px" }}>🍀</div>
-          <div style={{ fontSize: "44px", fontWeight: "900", color: "#4ade80", marginBottom: "6px" }}>{t.surrenderTitle}</div>
-          <div style={{ fontSize: "20px", color: "#86efac", marginBottom: "24px" }}>{t.surrenderSub}</div>
+          <div style={{ fontSize: "44px", fontWeight: "900", color: "#4ade80", marginBottom: "4px" }}>{t.surrenderTitle}</div>
+          <div style={{ fontSize: "20px", color: "#86efac", marginBottom: "12px" }}>{t.surrenderSub}</div>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginBottom: "24px", flexWrap: "wrap", alignItems: "flex-start" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginBottom: "8px", alignItems: "flex-end" }}>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "8px", fontWeight: "bold" }}>{t.target}</div>
               <CloverCard number={cards.target} isTarget size="normal7" />
             </div>
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "8px", justifyContent: "center", alignItems: "flex-end" }}>
               {cards.nums.map((n, i) => <CloverCard key={i} number={n} size="xsmall7" />)}
             </div>
           </div>
 
-          <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "24px 32px", marginBottom: "28px" }}>
-            <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "12px", letterSpacing: "2px" }}>例えば…</div>
+          <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "16px 32px", marginBottom: "12px" }}>
+            <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "6px", letterSpacing: "2px" }}>例えば…</div>
             <div style={{ fontSize: "32px", fontWeight: "900", color: "white", fontFamily: "monospace", letterSpacing: "2px" }}>
               {solutionExpr} = {cards.target}
             </div>
@@ -799,7 +799,16 @@ export default function App() {
             ) : (
               <>
                 {isNewRecord && <div style={{ color: "#fbbf24", fontSize: "24px", fontWeight: "900", marginBottom: "8px", animation: "blink-gold 1.8s infinite" }}>{t.newRecord}</div>}
-                {bestTime !== null && <div style={{ color: "#fbbf24", fontSize: "18px", marginBottom: "8px" }}>{t.currentBest}{fmt(bestTime)}{t.sec}</div>}
+                {bestTime !== null && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", justifyContent: "center", marginBottom: "8px" }}>
+                    <div style={{ color: "#fbbf24", fontSize: "18px" }}>{t.currentBest}{fmt(bestTime)}{t.sec}</div>
+                    <button
+                      onPointerDown={e=>btnDown(e,"0 1px 0 #7f1d1d")}
+                      onPointerUp={e=>{ try { if(e.currentTarget){ e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="0 4px 0 #7f1d1d"; } } catch {} playKyuririn(); setBestTime(null); try { localStorage.removeItem("clover_best_pc"); } catch {} }}
+                      onPointerLeave={e=>btnLeave(e,"0 4px 0 #7f1d1d")}
+                      style={{ background: "linear-gradient(145deg,#ef4444,#dc2626)", border: "none", borderRadius: "8px", color: "white", fontWeight: "bold", fontSize: "11px", padding: "4px 10px", cursor: "pointer", boxShadow: "0 4px 0 #7f1d1d", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s", flexShrink: 0 }}>{t.reset}</button>
+                  </div>
+                )}
                 <div style={{ color: "#555", fontSize: "15px", marginBottom: "6px" }}>{feedback?.msg}</div>
                 <div style={{ fontSize: "18px", color: "#5cb85c", fontStyle: "italic", marginBottom: "20px" }}>{t.toBeHappy}</div>
                 <div style={{ display: "flex", gap: "14px", marginBottom: "14px" }}><div style={{ flex: 1 }}><PBtn label={t.nextGame2} onClick={() => startGame(false)} /></div></div>

@@ -124,6 +124,59 @@ function findSolution(nums, target) {
   return null;
 }
 
+function findSolutionSteps(nums, target) {
+  const ops = ["+", "-", "*", "/"];
+  const opSymbols = { "+": "+", "-": "-", "*": "×", "/": "÷" };
+  function perms(arr) {
+    if (arr.length <= 1) return [arr];
+    const r = [];
+    for (let i = 0; i < arr.length; i++) {
+      const rest = [...arr.slice(0, i), ...arr.slice(i + 1)];
+      for (const p of perms(rest)) r.push([arr[i], ...p]);
+    }
+    return r;
+  }
+  function opCombos(n) {
+    if (n === 0) return [[]];
+    const r = [];
+    for (const op of ops) for (const rest of opCombos(n - 1)) r.push([op, ...rest]);
+    return r;
+  }
+  function evaluate(vals, operators) {
+    let result = vals[0];
+    for (let i = 0; i < operators.length; i++) {
+      const v = vals[i + 1];
+      if (operators[i] === "+") result += v;
+      else if (operators[i] === "-") result -= v;
+      else if (operators[i] === "*") result *= v;
+      else { if (v === 0) return null; result /= v; }
+    }
+    return result;
+  }
+  for (const perm of perms(nums))
+    for (const combo of opCombos(4)) {
+      const val = evaluate(perm, combo);
+      if (val !== null && Math.abs(val - target) < 0.0001) {
+        const steps = [];
+        let current = perm[0];
+        for (let i = 0; i < combo.length; i++) {
+          const next = perm[i + 1];
+          const sym = opSymbols[combo[i]];
+          let result;
+          if (combo[i] === "+") result = current + next;
+          else if (combo[i] === "-") result = current - next;
+          else if (combo[i] === "*") result = current * next;
+          else result = current / next;
+          const resultDisplay = Number.isInteger(result) ? result : Math.round(result * 100) / 100;
+          steps.push({ left: current, op: sym, right: next, result: resultDisplay });
+          current = result;
+        }
+        return steps;
+      }
+    }
+  return null;
+}
+
 function canSolve(nums, target) {
   const ops = ["+", "-", "*", "/"];
   function perms(arr) {
@@ -401,7 +454,7 @@ export default function App() {
   }, [running]);
 
   const goBackToPlaying = () => { setPhase("playing"); setRunning(true); if (isTutorial) setTutStep(4); };
-  const solutionExpr = useMemo(() => cards ? (findSolution(cards.nums, cards.target) ?? "…") : "…", [cards]);
+  const solutionSteps = useMemo(() => cards ? findSolutionSteps(cards.nums, cards.target) : null, [cards]);
   const fospa = () => { setRunning(false); setPhase("fospa"); if (isTutorial) setTutStep(5); };
 
   const checkAnswer = () => {
@@ -559,8 +612,10 @@ export default function App() {
             </div>
             <PBtn label={t.start} onClick={() => startGame(false)} />
             <div style={{ fontSize: "14px", color: "#86efac", marginTop: "16px", lineHeight: "2.0" }}>{t.tutHint1} {t.tutHint2}</div>
-            <div style={{ marginTop: "20px", fontSize: "20px", fontWeight: "bold", color: "white" }}>{t.by}</div>
-            <a href="http://nextchallenge.jp" target="_blank" style={{ color: "#4ade80", fontSize: "14px", textDecoration: "none", letterSpacing: "1px" }}>nextchallenge.jp</a>
+            <div style={{ marginTop: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
+              <div style={{ fontSize: "20px", fontWeight: "bold", color: "white" }}>{t.by}</div>
+              <a href="http://nextchallenge.jp" target="_blank" style={{ color: "#4ade80", fontSize: "14px", textDecoration: "none", letterSpacing: "1px" }}>nextchallenge.jp</a>
+            </div>
           </div>
         </div>
       )}
@@ -762,10 +817,16 @@ export default function App() {
           </div>
 
           <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "16px 32px", marginBottom: "12px" }}>
-            <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "6px", letterSpacing: "2px" }}>例えば…</div>
-            <div style={{ fontSize: "32px", fontWeight: "900", color: "white", fontFamily: "monospace", letterSpacing: "2px" }}>
-              {solutionExpr} = {cards.target}
-            </div>
+            <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "10px", letterSpacing: "2px" }}>例えば…</div>
+            {solutionSteps ? solutionSteps.map((step, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "24px", fontWeight: "900", color: "white", fontFamily: "monospace", marginBottom: "8px" }}>
+                <span style={{ color: "#86efac" }}>{step.left}</span>
+                <span style={{ color: "#fbbf24" }}>{step.op}</span>
+                <span style={{ color: "#86efac" }}>{step.right}</span>
+                <span style={{ color: "#aaa" }}>=</span>
+                <span style={{ color: i === solutionSteps.length - 1 ? "#4ade80" : "white", fontWeight: "900" }}>{step.result}</span>
+              </div>
+            )) : <div style={{ fontSize: "24px", color: "white" }}>…</div>}
           </div>
 
           <div style={{ maxWidth: "400px", margin: "0 auto" }}>

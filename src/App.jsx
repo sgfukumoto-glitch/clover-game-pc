@@ -433,10 +433,10 @@ export default function App() {
           const c2 = setTimeout(() => setCountdown(2), 1400);
           const c1 = setTimeout(() => setCountdown(1), 2400);
           const cGo = setTimeout(() => {
-            setCountdown("GO!"); setAllRevealed(true);
+            setCountdown("GO!"); setAllRevealed(true); setPhase("playing"); setRunning(true);
+            if (tutorial) setTutStep(1);
             const cStart = setTimeout(() => {
-              setCountdown(null); setPhase("playing"); setRunning(true);
-              if (tutorial) setTutStep(1);
+              setCountdown(null);
             }, 800);
             dealingTimeoutsRef.current.push(cStart);
           }, 3400);

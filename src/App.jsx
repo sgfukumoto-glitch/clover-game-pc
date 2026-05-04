@@ -818,15 +818,28 @@ export default function App() {
 
           <div style={{ background: "#111f14", border: "2px solid #4ade8055", borderRadius: "20px", padding: "16px 32px", marginBottom: "12px" }}>
             <div style={{ fontSize: "14px", color: "#4ade8088", marginBottom: "10px", letterSpacing: "2px" }}>例えば…</div>
-            {solutionSteps ? solutionSteps.map((step, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "24px", fontWeight: "900", color: "white", fontFamily: "monospace", marginBottom: "8px" }}>
-                <span style={{ color: "#86efac" }}>{step.left}</span>
-                <span style={{ color: "#fbbf24" }}>{step.op}</span>
-                <span style={{ color: "#86efac" }}>{step.right}</span>
-                <span style={{ color: "#aaa" }}>=</span>
-                <span style={{ color: i === solutionSteps.length - 1 ? "#4ade80" : "white", fontWeight: "900" }}>{step.result}</span>
-              </div>
-            )) : <div style={{ fontSize: "24px", color: "white" }}>…</div>}
+            {solutionSteps ? (() => {
+              const pool = [...cards.nums];
+              const isCard = (val) => {
+                const idx = pool.findIndex(n => n === val);
+                if (idx !== -1) { pool.splice(idx, 1); return true; }
+                return false;
+              };
+              return solutionSteps.map((step, i) => {
+                const leftIsCard = i === 0 ? isCard(step.left) : false;
+                const rightIsCard = isCard(step.right);
+                const isLast = i === solutionSteps.length - 1;
+                return (
+                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "24px", fontWeight: "900", fontFamily: "monospace", marginBottom: "8px" }}>
+                    <span style={{ color: leftIsCard ? "#4ade80" : "white" }}>{step.left}</span>
+                    <span style={{ color: "#f97316" }}>{step.op}</span>
+                    <span style={{ color: rightIsCard ? "#4ade80" : "white" }}>{step.right}</span>
+                    <span style={{ color: "#aaa" }}>=</span>
+                    <span style={{ color: isLast ? "#ef4444" : "white" }}>{step.result}</span>
+                  </div>
+                );
+              });
+            })() : <div style={{ fontSize: "24px", color: "white" }}>…</div>}
           </div>
 
           <div style={{ maxWidth: "400px", margin: "0 auto" }}>

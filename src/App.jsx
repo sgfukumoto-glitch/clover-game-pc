@@ -97,7 +97,7 @@ const T = {
     about1title: "Supervisionado Por", about1: "NPO Foster Partner supervisionou este app.",
     about2title: "A Historia", about2: "Reconstruimos um jogo de cartas classico digitalmente!",
     about3title: "Para Quem?", about3: "A partir do 3 ano! Adultos nao tem vantagem - familia toda pode competir!",
-    about4title: "O Nome", about4: "CLOVER tem LOVE no nome! :)",
+    about4title: "O Nome", about4: "CLOVER tem LOVE no nome!",
   },
 };
 

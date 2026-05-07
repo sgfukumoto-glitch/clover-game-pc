@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
+const TOUCAN_B64 = "data:image/webp;base64,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";
+
 const T = {
   ja: {
     title: "🍀 CLOVER™️", subtitle: "♣ NUMBER CARD GAME ♣",
@@ -66,6 +68,38 @@ const T = {
     about2title: "📖 The Story Behind It", about2: <>There used to be a card game with similar logic, but it disappeared from stores. Out of nostalgia, we reverse-engineered the logic and rebuilt it digitally as <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
     about3title: "👨‍👩‍👧‍👦 Who Is It For?", about3: <>Anyone who can do basic arithmetic — <strong style={{ color: "white" }}>from about 3rd grade</strong> and up!<br/>Adults don't necessarily have the advantage, so the whole family can compete for real.<br/><br/>Perfect for when the family is home but bored！<br/><span style={{ color: "#fbbf24" }}>・Working from home? Great indoor activity!</span><br/><span style={{ color: "#fbbf24" }}>・Grandparents vs grandkids — great for the brain!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・The whole family competing for real！</span></>,
     about4title: "🍀 The Name CLOVER", about4: <>Four-leaf clover → brings happiness → even something that looks difficult might have a solution if you rearrange and combine it creatively！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※ C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — there's LOVE right in the name！ 😄</strong></>,
+  pt: {
+    title: "🍀 CLOVER™️", subtitle: "♣ JOGO DE CARTAS NUMÉRICO ♣",
+    best: "🏆 Melhor", sec: "s", reset: "Resetar", resetConfirm: "Resetar seu melhor tempo?",
+    howToPlay: "Como Jogar 📖", start: "Iniciar 🃏",
+    desc: (<>Tire cartas de um baralho de 52!<br/>Use <span style={{ color: "#60a5fa", fontWeight: "bold" }}>①②③④⑤</span> com operações aritméticas para chegar ao número <span style={{ color: "#ef4444", fontWeight: "bold" }}>⑥</span> alvo!<br/>Compita contra o relógio!</>),
+    toBeHappy: "to be happy... 🍀", tutHint1: "📖 Rosa → Tente o tutorial primeiro!", tutHint2: "🃏 Amarelo → Iniciar o jogo de verdade!",
+    by: "by NPO Foster Partner®️", back: "← Voltar", surrender: "Pular →", surrenderTitle: "Resposta", surrenderSub: "Uma forma de resolver!", surrenderNext: "Próximo Jogo 🃏", tut4surrender: "Se travar e quiser ver a resposta, pressione o botão \"Pular\".",
+    tutBanner: "Tutorial 🩷", backToTitle: "Voltar ao Início", next: "Próximo →",
+    tut1: "👆 O cronômetro começa assim que o jogo inicia！⏱",
+    target: "⑥ ALVO",
+    tut2: "👆 Este é o ⑥ Alvo! Seu objetivo é chegar neste número!",
+    tut3: "Estas são as 5 cartas ①②③④⑤! Reorganize-as com operadores aritméticos(+-×÷) para chegar ao alvo!",
+    tut3b: "Você pode usar operadores quantas vezes quiser!",
+    tut4: "Quando estiver pronto, grite \"Fospa!\" e pressione 👈 o botão! Se travar, pressione o botão \"Pular\" 👆",
+    fospa: "Fospa！🙋", dealing: "Distribuindo cartas…",
+    fospaTime: "Fospa！ ⏱", tutBanner2: "Tutorial 🩷", backOk: "Você pode voltar para repensar!",
+    tut5: <>Combine números e operadores assim para construir sua resposta!<br/>Depois pressione "Verificar Resposta"!</>,
+    tut6: <>Expressão inserida! 👇 Pressione "Verificar Resposta"!</>,
+    exprPlaceholder: "Sua expressão vai aqui", check: "Verificar Resposta！", retry: "Tentar de Novo",
+    errAll: "Use cada um de ①~⑤ exatamente uma vez!", errExpr: "Expressão inválida. Por favor verifique!",
+    correct: (t) => `Correto！= ${t} 🍀`, wrong: (v) => `Isso é igual a ${v}`,
+    tutComplete: <>Tutorial Completo！🎉</>, correct2: "Correto！🍬",
+    tutResult1: "⬆️ Esse é o seu tempo! No jogo real, seu melhor é salvo！🏆",
+    tutResult2: <>Pegou o jeito？ Agora é hora de jogar de verdade！👇</>,
+    nextGame: "Próximo Jogo 🃏 (Real!)", about: "🍀 Sobre o CLOVER™️",
+    newRecord: "🎉 Novo Recorde！ 🎉", currentBest: "🏆 Melhor Atual：",
+    nextGame2: "Próximo Jogo 🃏", toTitle: "Início",
+    aboutTitle: "🍀 Sobre o CLOVER™️",
+    about1title: "🏢 Supervisionado Por", about1: <>Este app foi criado sob supervisão da <strong style={{ color: "white" }}>NPO Foster Partner®️</strong>.</>,
+    about2title: "📖 A História Por Trás", about2: <>Havia um jogo de cartas com lógica similar, mas desapareceu das lojas. Com saudade, revertemos a lógica e reconstruímos digitalmente como <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
+    about3title: "👨‍👩‍👧‍👦 Para Quem É?", about3: <>Qualquer um que saiba aritmética básica — <strong style={{ color: "white" }}>a partir do 3º ano</strong> em diante!<br/>Adultos não têm necessariamente vantagem, então toda a família pode competir de verdade.<br/><br/>Perfeito para quando a família está em casa sem nada pra fazer！<br/><span style={{ color: "#fbbf24" }}>・Trabalhando de casa? Ótima atividade!</span><br/><span style={{ color: "#fbbf24" }}>・Avós vs netos — ótimo para o cérebro!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・Toda a família competindo de verdade！</span></>,
+    about4title: "🍀 O Nome CLOVER", about4: <>Trevo de quatro folhas → traz felicidade → mesmo algo que parece difícil pode ter solução se você reorganizar e combinar criativamente！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※ C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — tem LOVE（amor）bem no nome！ 😄</strong></>,
   },
 };
 
@@ -284,7 +318,7 @@ function CloverCard({ number, isTarget = false, size = "normal" }) {
   );
 }
 
-function CardBack({ size = "normal" }) {
+function CardBack({ size = "normal", lang = "ja" }) {
   const d = {
     large:  { w: 110, h: 160, r: 12, fs: 35 },
     normal: { w: 85,  h: 123, r: 11, fs: 28 },
@@ -298,7 +332,12 @@ function CardBack({ size = "normal" }) {
       border: "2px solid #4ade8033",
       display: "flex", alignItems: "center", justifyContent: "center",
       fontSize: d.fs, flexShrink: 0, boxShadow: "0 3px 14px rgba(0,0,0,0.45)",
-    }}>🍀</div>
+      overflow: "hidden",
+    }}>
+      {lang === "pt"
+        ? <img src={TOUCAN_B64} alt="🍀" style={{ width: "90%", height: "90%", objectFit: "contain" }} />
+        : "🍀"}
+    </div>
   );
 }
 
@@ -574,10 +613,10 @@ export default function App() {
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", paddingRight: "8px" }}>
           <button
             onPointerDown={e=>btnDown(e,"0 3px 0 #333")}
-            onPointerUp={e=>btnUp(e,"0 10px 0 #333",()=>setLang(l=>l==="ja"?"en":"ja"))}
+            onPointerUp={e=>btnUp(e,"0 10px 0 #333",()=>setLang(l=>l==="ja"?"en":l==="en"?"pt":"ja"))}
             onPointerLeave={e=>btnLeave(e,"0 10px 0 #333")}
             style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s", letterSpacing: "2px" }}>
-            {lang === "ja" ? "🇺🇸 English" : "🇯🇵 日本語"}
+            {lang === "ja" ? "🇺🇸 English" : lang === "en" ? "🇧🇷 Português" : "🇯🇵 日本語"}
           </button>
         </div>
         <div style={{ fontSize: "52px", fontWeight: "900", letterSpacing: "5px", color: "#4ade80", lineHeight: 1 }}>{t.title}</div>
@@ -652,7 +691,7 @@ export default function App() {
                   <div style={{ textAlign: "center" }}>
                     <div style={{ fontSize: "12px", letterSpacing: "3px", color: "#ef4444cc", marginBottom: "6px", fontWeight: "bold" }}>⑥ TARGET</div>
                     {dealtCount >= 1
-                      ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal7" /> : <CardBack size="normal" />)
+                      ? (allRevealed ? <CloverCard number={cards.target} isTarget size="normal7" /> : <CardBack size="normal" lang={lang} />)
                       : <div style={{ width: 161, height: 237 }} />}
                   </div>
                 </div>
@@ -676,7 +715,7 @@ export default function App() {
                 <div style={{ display: "flex", gap: "5px", justifyContent: "center" }}>
                   {cards.nums.map((n, i) => (
                     dealtCount >= i + 2
-                      ? (allRevealed ? <CloverCard key={i} number={n} size="small7" /> : <CardBack key={i} size="small" />)
+                      ? (allRevealed ? <CloverCard key={i} number={n} size="small7" /> : <CardBack key={i} size="small" lang={lang} />)
                       : <div key={i} style={{ width: 122, height: 193 }} />
                   ))}
                 </div>
@@ -766,7 +805,7 @@ export default function App() {
               {(!isTutorial || tutStep !== 5) && (
                 <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
                   <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",backspaceExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", width: "60px", height: "50px", fontSize: "22px", cursor: "pointer", flexShrink: 0, boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>⌫</button>
-                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",clearExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer", boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{lang === "ja" ? "全消し" : "All Clear"}</button>
+                  <button onPointerDown={e=>btnDown(e,"0 1px 0 #0a1a0f")} onPointerUp={e=>btnUp(e,"0 5px 0 #0a1a0f",clearExpr)} onPointerLeave={e=>btnLeave(e,"0 5px 0 #0a1a0f")} style={{ background: "#1a2f1e", border: "1px solid #4ade8033", borderRadius: "10px", color: "#86efac", fontWeight: "bold", flex: 1, height: "50px", fontSize: "18px", cursor: "pointer", boxShadow: "0 5px 0 #0a1a0f", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s" }}>{lang === "ja" ? "全消し" : lang === "en" ? "All Clear" : "Apagar"}</button>
                 </div>
               )}
               {feedback && (

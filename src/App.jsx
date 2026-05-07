@@ -99,7 +99,7 @@ const T = {
     about1title: "🏢 Supervisionado Por", about1: <>Este app foi criado sob supervisão da <strong style={{ color: "white" }}>NPO Foster Partner®️</strong>.</>,
     about2title: "📖 A História Por Trás", about2: <>Havia um jogo de cartas com lógica similar, mas desapareceu das lojas. Com saudade, revertemos a lógica e reconstruímos digitalmente como <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
     about3title: "👨‍👩‍👧‍👦 Para Quem É?", about3: <>Qualquer um que saiba aritmética básica — <strong style={{ color: "white" }}>a partir do 3º ano</strong> em diante!<br/>Adultos não têm necessariamente vantagem, então toda a família pode competir de verdade.<br/><br/>Perfeito para quando a família está em casa sem nada pra fazer！<br/><span style={{ color: "#fbbf24" }}>・Trabalhando de casa? Ótima atividade!</span><br/><span style={{ color: "#fbbf24" }}>・Avós vs netos — ótimo para o cérebro!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・Toda a família competindo de verdade！</span></>,
-    about4title: "🍀 O Nome CLOVER", about4: <>Trevo de quatro folhas {"→"} traz felicidade {"→"} mesmo algo que parece difícil pode ter solução se você reorganizar e combinar criativamente！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>{"※"} C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — tem LOVE {"(amor)"} bem no nome！ 😄</strong></>,
+    about4title: "🍀 O Nome CLOVER", about4: "Trevo de quatro folhas → traz felicidade → mesmo algo que parece difícil pode ter solução se você reorganizar e combinar criativamente！ ※ C♥LOVER™️ — tem LOVE (amor) bem no nome！ 😄",
   },
 };
 

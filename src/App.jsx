@@ -66,8 +66,7 @@ const T = {
     about1title: "🏢 Supervised By", about1: <>This app was created under the supervision of <strong style={{ color: "white" }}>NPO Foster Partner®️</strong>.</>,
     about2title: "📖 The Story Behind It", about2: <>There used to be a card game with similar logic, but it disappeared from stores. Out of nostalgia, we reverse-engineered the logic and rebuilt it digitally as <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
     about3title: "👨‍👩‍👧‍👦 Who Is It For?", about3: <>Anyone who can do basic arithmetic — <strong style={{ color: "white" }}>from about 3rd grade</strong> and up!<br/>Adults don't necessarily have the advantage, so the whole family can compete for real.<br/><br/>Perfect for when the family is home but bored！<br/><span style={{ color: "#fbbf24" }}>・Working from home? Great indoor activity!</span><br/><span style={{ color: "#fbbf24" }}>・Grandparents vs grandkids — great for the brain!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・The whole family competing for real！</span></>,
-    about4title: "🍀 The Name CLOVER", about4: <>Four-leaf clover → brings happiness → even something that looks difficult might have a solution if you rearrange and combine it creatively！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※ C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — there's LOVE right in the name！ 😄</strong></>,
-  pt: {
+    about4title: "The Name CLOVER", about4: "Four-leaf clover brings happiness! CLOVER has LOVE in the name!",
     title: "🍀 CLOVER™️", subtitle: "♣ JOGO DE CARTAS NUMERICO ♣",
     best: "🏆 Melhor", sec: "s", reset: "Resetar", resetConfirm: "Resetar seu melhor tempo?",
     howToPlay: "Como Jogar 📖", start: "Iniciar 🃏",

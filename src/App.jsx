@@ -100,8 +100,7 @@ const T = {
     about1title: "Supervisionado Por", about1: "Este app foi criado sob supervisao da NPO Foster Partner.",
     about2title: "A Historia Por Tras", about2: "Havia um jogo de cartas com logica similar, mas desapareceu das lojas. Com saudade, revertemos a logica e reconstruimos digitalmente como CLOVER!",
     about3title: "Para Quem E?", about3: "Qualquer um que saiba aritmetica basica - a partir do 3 ano em diante! Adultos nao tem necessariamente vantagem, entao toda a familia pode competir de verdade.",
-    about4title: "O Nome CLOVER", about4: "Trevo de quatro folhas - traz felicidade - mesmo algo que parece dificil pode ter solucao se voce reorganizar! CLOVER tem LOVE (amor) bem no nome! :)",
-  },
+    about4: "CLOVER tem LOVE no nome!",
 };
 
 function buildDeck() {

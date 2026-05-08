@@ -68,7 +68,8 @@ const T = {
     about1title: "🏢 Supervised By", about1: <>This app was created under the supervision of <strong style={{ color: "white" }}>NPO Foster Partner®️</strong>.</>,
     about2title: "📖 The Story Behind It", about2: <>There used to be a card game with similar logic, but it disappeared from stores. Out of nostalgia, we reverse-engineered the logic and rebuilt it digitally as <strong style={{ color: "white" }}>CLOVER™️</strong>!</>,
     about3title: "👨‍👩‍👧‍👦 Who Is It For?", about3: <>Anyone who can do basic arithmetic — <strong style={{ color: "white" }}>from about 3rd grade</strong> and up!<br/>Adults don't necessarily have the advantage, so the whole family can compete for real.<br/><br/>Perfect for when the family is home but bored！<br/><span style={{ color: "#fbbf24" }}>・Working from home? Great indoor activity!</span><br/><span style={{ color: "#fbbf24" }}>・Grandparents vs grandkids — great for the brain!</span><br/><span style={{ color: "#fbbf24", fontWeight: "bold" }}>・The whole family competing for real！</span></>,
-    about4title: "🍀 The Name CLOVER", about4: <>Four-leaf clover → brings happiness → even something that looks difficult might have a solution if you rearrange and combine it creatively！<br/><br/><strong style={{ color: "#fbbf24", fontSize: "18px" }}>※ C<span style={{ color: "#ef4444" }}>LOVE</span>R™️ — there's LOVE right in the name！ 😄</strong></>,
+    about4title: "The Name CLOVER", about4: "CLOVER has LOVE right in the name!",
+  },
   pt: {
     title: "🍀 CLOVER™️", subtitle: "♣ JOGO DE CARTAS NUMERICO ♣",
     best: "🏆 Melhor", sec: "s", reset: "Resetar", resetConfirm: "Resetar seu melhor tempo?",
@@ -100,7 +101,8 @@ const T = {
     about1title: "Supervisionado Por", about1: "Este app foi criado sob supervisao da NPO Foster Partner.",
     about2title: "A Historia Por Tras", about2: "Havia um jogo de cartas com logica similar, mas desapareceu das lojas. Com saudade, revertemos a logica e reconstruimos digitalmente como CLOVER!",
     about3title: "Para Quem E?", about3: "Qualquer um que saiba aritmetica basica - a partir do 3 ano em diante! Adultos nao tem necessariamente vantagem, entao toda a familia pode competir de verdade.",
-    about4: "CLOVER tem LOVE no nome!",
+    about4title: "O Nome CLOVER", about4: "Trevo de quatro folhas - traz felicidade - mesmo algo que parece dificil pode ter solucao se voce reorganizar! CLOVER tem LOVE (amor) bem no nome! :)",
+  },
 };
 
 function buildDeck() {

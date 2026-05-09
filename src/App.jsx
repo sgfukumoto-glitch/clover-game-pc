@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 
-const TOUCAN_URL = "/toucan.jpg";
+const TOUCAN_URL = "/toucan.png";
 
 const T = {
   ja: {
@@ -337,7 +337,7 @@ function CardBack({ size = "normal", lang = "ja" }) {
       overflow: "hidden",
     }}>
       {lang === "pt"
-        ? <img src={TOUCAN_URL} alt="🍀" style={{ width: "90%", height: "90%", objectFit: "contain" }} />
+        ? <img src={TOUCAN_URL} alt="🍀" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         : "🍀"}
     </div>
   );

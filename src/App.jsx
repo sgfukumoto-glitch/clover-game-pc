@@ -614,7 +614,7 @@ export default function App() {
       <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px", position: "relative" }}>
         <div style={{ fontSize: "72px", fontWeight: "900", letterSpacing: "6px", color: "#4ade80", lineHeight: 1, textShadow: "0 4px 0 #166534, 0 8px 16px rgba(74,222,128,0.4)", display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px" }}>
           <span>🍀 CLOVER</span>
-          <span style={{ fontSize: "32px", textShadow: "0 2px 0 #166534, 0 4px 8px rgba(74,222,128,0.4)" }}>™️</span>
+          <span style={{ fontSize: "32px", textShadow: "0 2px 0 #166534, 0 4px 8px rgba(74,222,128,0.4)", verticalAlign: "super", lineHeight: 0 }}>™️</span>
         </div>
         <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>{t.subtitle}</div>
         {bestTime !== null && (

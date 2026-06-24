@@ -612,9 +612,9 @@ export default function App() {
     }}>
       {phase === "start" && (
       <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px", position: "relative" }}>
-        <div style={{ fontSize: "72px", fontWeight: "900", letterSpacing: "6px", color: "#4ade80", lineHeight: 1, textShadow: "0 4px 0 #166534, 0 8px 16px rgba(74,222,128,0.4)", display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px" }}>
-          <span>🍀 CLOVER</span>
-          <span style={{ fontSize: "32px", textShadow: "0 2px 0 #166534, 0 4px 8px rgba(74,222,128,0.4)", verticalAlign: "super", lineHeight: 0 }}>™️</span>
+        <div style={{ fontSize: "72px", fontWeight: "900", letterSpacing: "6px", color: "#4ade80", lineHeight: 1, display: "flex", alignItems: "flex-start", justifyContent: "center", gap: "4px" }}>
+          <span style={{ textShadow: "0 4px 0 #166534, 0 6px 0 #0d4020, 0 10px 20px rgba(74,222,128,0.5)", WebkitTextStroke: "1.5px #166534" }}>🍀 CLOVER</span>
+          <span style={{ fontSize: "28px", textShadow: "0 2px 0 #166534, 0 4px 8px rgba(74,222,128,0.4)", WebkitTextStroke: "1px #166534", marginTop: "6px" }}>™️</span>
         </div>
         <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>{t.subtitle}</div>
         {bestTime !== null && (

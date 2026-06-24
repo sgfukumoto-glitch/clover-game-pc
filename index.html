@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head><meta charset="UTF-8" /><title>CLOVER</title></head>
+  <head>
+    <meta charset="UTF-8" /><title>CLOVER</title><meta name="theme-color" content="#0a1a0f">
+    <style>
+  * { touch-action: manipulation; }
+</style>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-33SFEQ5989"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-33SFEQ5989');
+    </script>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>

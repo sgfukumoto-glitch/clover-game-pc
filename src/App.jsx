@@ -438,6 +438,7 @@ export default function App() {
   const [phase, setPhase] = useState("start");
   const [lang, setLang] = useState("ja");
   const t = T[lang];
+  const isMobile = window.innerWidth < 1024;
   const [cards, setCards] = useState(null);
   const [revealedCount, setRevealedCount] = useState(-1);
   const [time, setTime] = useState(0);

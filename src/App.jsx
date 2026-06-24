@@ -614,7 +614,6 @@ export default function App() {
       {phase === "start" && (
       <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px" }}>
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", paddingRight: "8px" }}>
-        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", paddingRight: "8px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
             <button
               onPointerDown={e=>btnDown(e,"0 3px 0 #333")}

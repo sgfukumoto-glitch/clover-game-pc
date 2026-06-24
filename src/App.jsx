@@ -614,28 +614,34 @@ export default function App() {
       {phase === "start" && (
       <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px" }}>
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", paddingRight: "8px" }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
-            <div style={{ display: "flex", gap: "8px", fontSize: "14px", letterSpacing: "1px", alignItems: "center" }}>
-              <span style={{ color: "#4ade8044" }}>📱Mobile</span>
-              <span style={{ color: "#4ade8033" }}>/</span>
-              <span style={{ color: "#4ade80", fontWeight: "bold" }}>💻PC</span>
-            </div>
-            <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-              <button
-                onClick={() => window.location.href = "https://clover-game-mobile.vercel.app"}
-                style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", letterSpacing: "2px" }}>
-                {lang === "ja" ? "📱Mobile版へ" : lang === "en" ? "📱To Mobile" : "📱Versão Mobile"}
-              </button>
-              <button
-                onPointerDown={e=>btnDown(e,"0 3px 0 #333")}
-                onPointerUp={e=>btnUp(e,"0 10px 0 #333",()=>setLang(l=>l==="ja"?"en":l==="en"?"pt":"ja"))}
-                onPointerLeave={e=>btnLeave(e,"0 10px 0 #333")}
-                style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s", letterSpacing: "2px" }}>
-                {lang === "ja" ? "🇺🇸 English" : lang === "en" ? "🇧🇷 Português" : "🇯🇵 日本語"}
-              </button>
-            </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            <button
+              onClick={() => window.location.href = "https://clover-game-mobile.vercel.app"}
+              style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", letterSpacing: "2px" }}>
+              {lang === "ja" ? "📱Mobile版へ" : lang === "en" ? "📱To Mobile" : "📱Versão Mobile"}
+            </button>
+            <button
+              onPointerDown={e=>btnDown(e,"0 3px 0 #333")}
+              onPointerUp={e=>btnUp(e,"0 10px 0 #333",()=>setLang(l=>l==="ja"?"en":l==="en"?"pt":"ja"))}
+              onPointerLeave={e=>btnLeave(e,"0 10px 0 #333")}
+              style={{ background: "linear-gradient(145deg,#444,#222)", border: "3px solid #888", borderRadius: "30px", color: "white", fontWeight: "bold", fontSize: "20px", padding: "10px 20px", cursor: "pointer", boxShadow: "0 10px 0 #111", transform: "translateY(0)", transition: "transform 0.1s, box-shadow 0.1s", letterSpacing: "2px" }}>
+              {lang === "ja" ? "🇺🇸 English" : lang === "en" ? "🇧🇷 Português" : "🇯🇵 日本語"}
+            </button>
+          </div>
+          <div style={{ display: "flex", gap: "8px", fontSize: "14px", letterSpacing: "1px", alignItems: "center" }}>
+            <span style={{ color: lang === "ja" ? "#4ade80" : "#4ade8044" }}>日本語</span>
+            <span style={{ color: "#4ade8033" }}>/</span>
+            <span style={{ color: lang === "en" ? "#4ade80" : "#4ade8044" }}>English</span>
+            <span style={{ color: "#4ade8033" }}>/</span>
+            <span style={{ color: lang === "pt" ? "#4ade80" : "#4ade8044" }}>Português</span>
+            <span style={{ color: "#4ade8033", margin: "0 8px" }}>｜</span>
+            <span style={{ color: "#4ade8044" }}>📱Mobile</span>
+            <span style={{ color: "#4ade8033" }}>/</span>
+            <span style={{ color: "#4ade80", fontWeight: "bold" }}>💻PC</span>
           </div>
         </div>
+      </div>
         <div style={{ fontSize: "52px", fontWeight: "900", letterSpacing: "5px", color: "#4ade80", lineHeight: 1 }}>{t.title}</div>
         <div style={{ fontSize: "13px", letterSpacing: "3px", color: "#4ade8044", marginTop: "5px" }}>{t.subtitle}</div>
         {bestTime !== null && (

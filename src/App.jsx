@@ -1218,7 +1218,7 @@ export default function App() {
 
    minHeight: "100vh", background: "#0a1a0f", display: "flex", flexDirection: "column", alignItems: "center",
 
-   padding: phase === "start" ? "48px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
+   padding: phase === "start" ? "80px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
 
   }}>
 

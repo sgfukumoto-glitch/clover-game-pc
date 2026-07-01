@@ -1325,15 +1325,15 @@ export default function App() {
      <div style={{ flex: 1 }}>
 
       {/* 説明 - クローバー背景 */}
-      <div style={{ position: "relative", marginBottom: "20px", padding: "28px 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", marginBottom: "12px", padding: "14px 24px", textAlign: "center" }}>
         <img
           src="/clover-leaf.png"
           alt=""
           style={{
             position: "absolute",
-            top: "60%", left: "50%",
+            top: "55%", left: "50%",
             transform: "translate(-50%, -50%) rotate(-10deg)",
-            width: "120%",
+            width: "70%",
             objectFit: "contain",
             opacity: 0.13,
             pointerEvents: "none",
@@ -1341,7 +1341,7 @@ export default function App() {
             userSelect: "none",
           }}
         />
-        <div style={{ position: "relative", zIndex: 1, lineHeight: "2.0" }}>{t.desc}</div>
+        <div style={{ position: "relative", zIndex: 1, lineHeight: "1.8" }}>{t.desc}</div>
       </div>
 
       <div style={{ marginBottom: "14px" }}>

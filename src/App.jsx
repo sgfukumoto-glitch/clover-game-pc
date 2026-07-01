@@ -1218,7 +1218,7 @@ export default function App() {
 
    minHeight: "100vh", background: "#0a1a0f", display: "flex", flexDirection: "column", alignItems: "center",
 
-   padding: phase === "start" ? "4px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
+   padding: phase === "start" ? "20px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
 
   }}>
 
@@ -1318,7 +1318,7 @@ export default function App() {
 
    {phase === "start" && (
 
-    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "12px" }}>
+    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "20px" }}>
 
      <div style={{ flexShrink: 0 }}><CloverCard number="？" size="large" /></div>
 
@@ -1360,9 +1360,9 @@ export default function App() {
 
       <PBtn label={t.start} onClick={() => startGame(false)} />
 
-      <div style={{ fontSize: "14px", color: "#86efac", marginTop: "16px", lineHeight: "2.0" }}>{t.tutHint1} {t.tutHint2}</div>
+      <div style={{ fontSize: "14px", color: "#86efac", marginTop: "8px", lineHeight: "2.0" }}>{t.tutHint1} {t.tutHint2}</div>
 
-      <div style={{ marginTop: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
+      <div style={{ marginTop: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
 
        <div style={{ fontSize: "20px", fontWeight: "bold", color: "white" }}>{t.by}</div>
 

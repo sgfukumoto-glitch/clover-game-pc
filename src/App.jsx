@@ -1218,13 +1218,13 @@ export default function App() {
 
    minHeight: "100vh", background: "#0a1a0f", display: "flex", flexDirection: "column", alignItems: "center",
 
-   padding: phase === "start" ? "20px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
+   padding: phase === "start" ? "48px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
 
   }}>
 
    {phase === "start" && (
 
-   <div style={{ textAlign: "center", marginBottom: "8px", width: "100%", maxWidth: "1100px", position: "relative" }}>
+   <div style={{ textAlign: "center", marginBottom: "0px", width: "100%", maxWidth: "1100px", position: "relative" }}>
 
     <div style={{ fontSize: "72px", fontWeight: "900", letterSpacing: "6px", color: "#4ade80", lineHeight: 1, display: "flex", alignItems: "flex-start", justifyContent: "center", gap: "4px" }}>
 
@@ -1318,7 +1318,7 @@ export default function App() {
 
    {phase === "start" && (
 
-    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "20px" }}>
+    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "8px" }}>
 
      <div style={{ flexShrink: 0 }}><CloverCard number="？" size="large" /></div>
 

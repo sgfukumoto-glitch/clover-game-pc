@@ -18,7 +18,7 @@ const T = {
 
   howToPlay: "やり方を学ぶ 📖", start: "スタート 🃏",
 
-  desc: (<><span style={{color:"#d4f7e0",fontSize:"27px"}}>5つの数字と四則計算を用いて<span style={{display:"block",marginTop:"-6px"}}>目標(target)の数字にするゲームだよ！</span>タイムアタック！</span><br/><br/><span style={{fontSize:"27px",color:"#fbbf24",fontWeight:"bold"}}>「幸せに決まった答えはない。」</span><br/><span style={{fontSize:"22px",color:"#fbbf24",fontStyle:"italic",fontWeight:"bold"}}>Think beyond the answer.</span></>),
+  desc: (<><span style={{color:"#d4f7e0",fontSize:"22px"}}>5つの数字と四則計算を用いて<span style={{display:"block",marginTop:"-4px"}}>目標(target)の数字にするゲームだよ！</span>タイムアタック！</span><br/><br/><span style={{fontSize:"27px",color:"#fbbf24",fontWeight:"bold"}}>「幸せに決まった答えはない。」</span><br/><span style={{fontSize:"22px",color:"#fbbf24",fontStyle:"italic",fontWeight:"bold"}}>Think beyond the answer.</span></>),
 
   toBeHappy: "to be happy... 🍀", tutHint1: "📖 ピンク→チュートリアルで試し遊び！", tutHint2: "🃏 黄色字→本番スタート！",
 
@@ -1218,13 +1218,13 @@ export default function App() {
 
    minHeight: "100vh", background: "#0a1a0f", display: "flex", flexDirection: "column", alignItems: "center",
 
-   padding: phase === "start" ? "32px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
+   padding: phase === "start" ? "12px 48px" : "16px 48px", color: "white", fontFamily: "Georgia,serif", boxSizing: "border-box",
 
   }}>
 
    {phase === "start" && (
 
-   <div style={{ textAlign: "center", marginBottom: "20px", width: "100%", maxWidth: "1100px", position: "relative" }}>
+   <div style={{ textAlign: "center", marginBottom: "8px", width: "100%", maxWidth: "1100px", position: "relative" }}>
 
     <div style={{ fontSize: "72px", fontWeight: "900", letterSpacing: "6px", color: "#4ade80", lineHeight: 1, display: "flex", alignItems: "flex-start", justifyContent: "center", gap: "4px" }}>
 
@@ -1318,14 +1318,14 @@ export default function App() {
 
    {phase === "start" && (
 
-    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "40px" }}>
+    <div style={{ width: "100%", maxWidth: "1100px", display: "flex", gap: "48px", alignItems: "flex-start", marginTop: "12px" }}>
 
      <div style={{ flexShrink: 0 }}><CloverCard number="？" size="large" /></div>
 
      <div style={{ flex: 1 }}>
 
       {/* 説明 - クローバー背景 */}
-      <div style={{ position: "relative", marginBottom: "12px", padding: "14px 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", marginBottom: "8px", padding: "10px 24px", textAlign: "center" }}>
         <img
           src="/clover-leaf.png"
           alt=""
@@ -1333,7 +1333,7 @@ export default function App() {
             position: "absolute",
             top: "55%", left: "50%",
             transform: "translate(-50%, -50%) rotate(-10deg)",
-            width: "70%",
+            width: "85%",
             objectFit: "contain",
             opacity: 0.13,
             pointerEvents: "none",
@@ -1341,7 +1341,7 @@ export default function App() {
             userSelect: "none",
           }}
         />
-        <div style={{ position: "relative", zIndex: 1, lineHeight: "1.8" }}>{t.desc}</div>
+        <div style={{ position: "relative", zIndex: 1, lineHeight: "1.7" }}>{t.desc}</div>
       </div>
 
       <div style={{ marginBottom: "14px" }}>

@@ -292,7 +292,13 @@ function findSolution(nums, target) {
 
    else if (operators[i] === "*") result *= v;
 
-   else { if (v === 0) return null; result /= v; }
+   else {
+    if (v === 0) return null;
+    if (!Number.isInteger(result / v)) return null;
+    result /= v;
+   }
+
+   if (!Number.isInteger(result)) return null;
 
   }
 
@@ -372,7 +378,13 @@ function findSolutionSteps(nums, target) {
 
    else if (operators[i] === "*") result *= v;
 
-   else { if (v === 0) return null; result /= v; }
+   else {
+    if (v === 0) return null;
+    if (!Number.isInteger(result / v)) return null;
+    result /= v;
+   }
+
+   if (!Number.isInteger(result)) return null;
 
   }
 
@@ -476,7 +488,13 @@ function canSolve(nums, target) {
 
    else if (operators[i] === "*") result *= v;
 
-   else { if (v === 0) return null; result /= v; }
+   else {
+    if (v === 0) return null;
+    if (!Number.isInteger(result / v)) return null;
+    result /= v;
+   }
+
+   if (!Number.isInteger(result)) return null;
 
   }
 

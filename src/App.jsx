@@ -898,10 +898,17 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const ref = params.get("ref");
-    if (ref && typeof gtag !== "undefined") {
-      gtag("event", "entry_source", {
-        entry_source: ref,
-      });
+    console.log("typeof gtag:", typeof gtag);
+    console.log("typeof window.gtag:", typeof window.gtag);
+    if (ref) {
+      if (typeof window.gtag !== "undefined") {
+        window.gtag("event", "entry_source", {
+          entry_source: ref,
+        });
+        console.log("GA4 event sent: entry_source =", ref);
+      } else {
+        console.log("gtag not found");
+      }
     }
   }, []);
 

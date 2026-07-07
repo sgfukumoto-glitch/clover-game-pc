@@ -900,7 +900,7 @@ export default function App() {
     const ref = params.get("ref");
     if (ref && typeof gtag !== "undefined") {
       gtag("event", "entry_source", {
-        ref: ref,
+        entry_source: ref,
       });
     }
   }, []);

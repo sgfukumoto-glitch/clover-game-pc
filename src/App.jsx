@@ -894,6 +894,17 @@ export default function App() {
 
  const [lang, setLang] = useState("ja");
 
+  // ?ref= パラメータを読み取ってGA4に送信
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    if (ref && typeof gtag !== "undefined") {
+      gtag("event", "entry_source", {
+        ref: ref,
+      });
+    }
+  }, []);
+
  const t = T[lang];
 
  const [cards, setCards] = useState(null);

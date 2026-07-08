@@ -18,7 +18,7 @@ const T = {
 
   howToPlay: "やり方を学ぶ 📖", start: "スタート 🃏",
 
-  desc: (<><span style={{color:"#d4f7e0",fontSize:"22px"}}>5つの数字と四則計算を用いて<span style={{display:"block",marginTop:"-4px"}}>目標(target)の数字にするゲームだよ！</span>タイムアタック！</span><br/><span style={{fontSize:"27px",color:"#fbbf24",fontWeight:"bold"}}>「幸せに決まった答えはない。」</span><br/><span style={{fontSize:"22px",color:"#fbbf24",fontStyle:"italic",fontWeight:"bold"}}>Think beyond the answer.</span></>),
+  desc: (<><span style={{color:"#d4f7e0",fontSize:"22px"}}>5つの数字と四則計算を用いて<span style={{display:"block",marginTop:"-4px"}}>目標(target)の数字にするゲームだよ！</span>タイムアタック！</span><br/><span style={{fontSize:"27px",color:"#fbbf24",fontWeight:"bold"}}>「幸せに、決まった答えはない。」</span><br/><span style={{fontSize:"22px",color:"#fbbf24",fontStyle:"italic",fontWeight:"bold"}}>Think beyond the answer.</span></>),
 
   toBeHappy: "to be happy... 🍀", tutHint1: "📖 ピンク→チュートリアルで試し遊び！", tutHint2: "🃏 黄色字→本番スタート！",
 

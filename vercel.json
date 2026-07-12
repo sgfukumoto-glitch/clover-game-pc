@@ -24,6 +24,17 @@
       "source": "/am",
       "destination": "/?ref=ameba",
       "permanent": false
+    },
+    {
+      "source": "/m001",
+      "destination": "/?ref=m001",
+      "permanent": false
+    },
+    {
+      "source": "/p001",
+      "destination": "/?ref=p001",
+      "permanent": false
     }
   ]
+}
 }

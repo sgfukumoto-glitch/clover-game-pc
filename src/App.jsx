@@ -26,8 +26,8 @@
       "permanent": false
     },
     {
-      "source": "/qr001",
-      "destination": "/?ref=qr001",
+      "source": "/m001",
+      "destination": "/?ref=m001",
       "permanent": false
     },
     {

@@ -7,20 +7,11 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 const TOUCAN_URL = "/toucan.png";
 
 function playCorrectSound() {
-  console.log('★★★ playCorrectSound called ★★★');
   try {
-    const audio = new Audio('/correct-sound.mp3');
-    audio.volume = 1.0;
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        console.log('★★★ audio play SUCCESS ★★★');
-        audio.volume = 0.25;
-      }).catch(e => console.error('★★★ audio play FAILED:', e, '★★★'));
-    }
-  } catch(e) {
-    console.error('★★★ playCorrectSound EXCEPTION:', e, '★★★');
-  }
+    const audio = new Audio('/correct-sound-pc.mp3');
+    audio.volume = 0.5;
+    audio.play().catch(e => console.warn('Audio play failed:', e));
+  } catch(e) {}
 }
 
 const T = {

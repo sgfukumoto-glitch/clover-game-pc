@@ -10,7 +10,7 @@ function playCorrectSound() {
   console.log('★★★ playCorrectSound called ★★★');
   try {
     const audio = new Audio('/correct-sound.mp3');
-    audio.volume = 0.25;
+    audio.volume = 1.0;
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {

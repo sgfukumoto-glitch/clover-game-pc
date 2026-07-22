@@ -6,7 +6,18 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 const TOUCAN_URL = "/toucan.png";
 
-
+function playCorrectSound() {
+  try {
+    const audio = new Audio('/correct-sound.mp3');
+    audio.volume = 0.25;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        audio.volume = 0.25;
+      }).catch(e => console.warn('Audio play failed:', e));
+    }
+  } catch(e) {}
+}
 
 const T = {
 
@@ -1052,11 +1063,12 @@ export default function App() {
 
    } else { setIsNewRecord(false); }
 
-   setTimeout(() => setPhase("result"), 900);
-
-  }
-
- };
+         setTimeout(() => {
+        setPhase("result");
+        if (!isTutorial) playCorrectSound();
+      }, 900);
+    }
+  };
 
 
 

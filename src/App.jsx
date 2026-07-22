@@ -1046,30 +1046,18 @@ export default function App() {
 
 
  const checkAnswer = () => {
-
   if (!cards) return;
-
   const r = validateExpression(expr, cards.nums, cards.target, t);
-
   setFeedback(r);
-
   if (r.ok) {
-
    if (!isTutorial && (bestTime === null || time < bestTime)) {
-
     setBestTime(time); setIsNewRecord(true);
-
     try { localStorage.setItem("clover_best_pc", String(time)); } catch {}
-
    } else { setIsNewRecord(false); }
-
-         setTimeout(() => {
-        setPhase("result");
-        if (!isTutorial) playCorrectSound();
-      }, 900);
+   if (!isTutorial) playCorrectSound();
+   setTimeout(() => setPhase("result"), 900);
     }
   };
-
 
 
  const advanceTutorial = () => setTutStep(s => s + 1);
